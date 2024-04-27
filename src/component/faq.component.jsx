@@ -9,7 +9,7 @@ function FaqUi({ question, answer }) {
   };
 
   return (
-    <div className="mb-2 w-1/2 rounded-sm border-t-2 pb-2 pl-2 pr-2 pt-2 text-xs shadow-xl">
+    <div className="mb-2 w-4/5 rounded-sm border-t-2 pb-2 pl-2 pr-2 pt-2 text-xs shadow-xl sm:w-4/5">
       <div
         onClick={toggleFaq}
         className="flex cursor-pointer items-center justify-between font-sans text-xs font-medium"
