@@ -6,6 +6,8 @@ export default {
       fontSec: 'Poppins',
       sans: 'Roboto Mono, monospace',
       fontLato: 'Lato',
+      lobster: 'Lobster',
+      marcellus: 'Marcellus',
     },
     extend: {},
   },

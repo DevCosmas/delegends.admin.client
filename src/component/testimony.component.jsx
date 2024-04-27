@@ -23,7 +23,7 @@ function ReviewCard({ message, image, stars, name }) {
   }
 
   return (
-    <div className=" mr-4 w-64 flex-shrink-0 grow-0 overflow-hidden rounded-lg bg-white p-6 shadow-2xl">
+    <div className=" mb-5 mr-4 mt-5 h-60 w-64 flex-shrink-0 grow-0 overflow-hidden rounded-lg bg-white p-6 pb-5 shadow-2xl">
       <div className="mb-4 flex items-start justify-center">
         <img
           src={image}
