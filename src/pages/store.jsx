@@ -9,37 +9,8 @@ function StorePage() {
 
   return (
     <div>
-      <header
-        className="mb-8 flex items-center justify-between gap-10 pb-4 pl-8 pr-8 pt-4
-      "
-      >
-        <StoreLogo></StoreLogo>
-        <form className="   grow-[1.5]">
-          <div className="flex items-center justify-between rounded-full border border-solid border-slate-950 px-3 py-2 pr-7 text-xs">
-            <input
-              type="text "
-              className="  w-4/5 border-none outline-none"
-              placeholder="search here"
-            />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="h-4 w-4"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-              />
-            </svg>
-          </div>
-        </form>
-      </header>
       <main className="relative">
-        <div className=" fixed bottom-0 right-0 top-20 z-40 h-full w-full">
+        <div className=" fixed bottom-0 right-0 top-0 z-40 h-full w-full">
           <span className="flex h-full w-full">
             <aside className=" h-full w-40 bg-green-900 pl-5 pt-2">
               <span className="mx-4  mt-4 pt-4 text-center">
@@ -142,6 +113,56 @@ function StorePage() {
               </ul>
             </aside>
             <div className="w flex-1 overflow-y-visible border-solid border-red-500">
+              <header
+                className="mb-8 flex items-center justify-between gap-10 pb-4 pl-8 pr-8 pt-4
+      "
+              >
+                <StoreLogo></StoreLogo>
+                <form className="flex items-center gap-4">
+                  <div className="flex-grow">
+                    <input
+                      type="text"
+                      className="w-full rounded-full border border-solid border-slate-950 px-3 py-2 text-xs outline-none"
+                      placeholder="Search here"
+                      aria-label="Search products"
+                    />
+                  </div>
+                  <select
+                    className="rounded-full border-none px-3 py-2 text-xs outline-none  hover:text-green-300"
+                    aria-label="Select category"
+                  >
+                    <option className="text-xs hover:bg-red-500" value="">
+                      Category
+                    </option>
+                    <option className="text-xs" value="health">
+                      Health
+                    </option>
+                    <option className="text-xs" value="skin-care">
+                      Skin Care
+                    </option>
+                    <option className="text-xs" value="agro">
+                      Agro
+                    </option>
+                  </select>
+
+                  <button type="submit" aria-label="Search">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="h-6 w-6 text-slate-950 hover:text-green-500 focus:text-green-500"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                      />
+                    </svg>
+                  </button>
+                </form>
+              </header>
               <Outlet></Outlet>
             </div>
           </span>
