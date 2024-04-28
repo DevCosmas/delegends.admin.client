@@ -141,7 +141,7 @@ function StorePage() {
                 </li>
               </ul>
             </aside>
-            <div className="w flex-1 border-solid border-red-500">
+            <div className="w flex-1 overflow-y-visible border-solid border-red-500">
               <Outlet></Outlet>
             </div>
           </span>
