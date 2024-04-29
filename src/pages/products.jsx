@@ -1,11 +1,33 @@
 // import { useQuery } from '@tanstack/react-query';
 // import axios from 'axios';
 // import { BASEURLDEV } from '../utils/constant';
+import { useState } from 'react';
 import Button from '../component/button.componet';
 // import { Audio } from 'react-loader-spinner';
 import { products } from '../utils/db';
+import CartIcon from '../icons/cart';
+import SingleProductUi from '../component/single.product';
 
 function ProductPage() {
+  const [pageCount, setPageCount] = useState(1);
+  const [isProduct, setIsProduct] = useState(false);
+  const [productObj, selectProduct] = useState(null);
+
+  function setProduct(product) {
+    console.log(product);
+    setIsProduct(true);
+    selectProduct(product);
+  }
+  function cancel() {
+    setIsProduct(false);
+    selectProduct(null);
+  }
+  function increasePageCount() {
+    setPageCount((prev) => prev + 1);
+  }
+  function decreasePageCount() {
+    setPageCount((prev) => (prev > 1 ? prev - 1 : 1));
+  }
   // const { data: products, isLoading } = useQuery({
   //   queryKey: ['products'],
   //   queryFn: async () => {
@@ -39,109 +61,97 @@ function ProductPage() {
   // }
 
   return (
-    // <div className="grid max-h-full grid-cols-4 gap-8 overflow-y-auto">
-    //   {productArray.map((product) => (
-    //     <div key={product.id} className="flex flex-col items-center">
-    //       <div className="h-40 w-40">
-    //         <img
-    //           className="h-full w-full object-cover"
-    //           src={product.productImage}
-    //           alt={`a photo of ${product.productName}`}
-    //         />
-    //       </div>
-    //       <p>{product.productName}</p>
-    //       <p>₦{product.price}</p> {/* Displaying Naira sign */}
-    //       <Button
-    //         classname={` hover:bg-green-300 text-center justify-center flex  w-50 hover:text-slate-950   pt-2 pb-2 pl-4 rounded-full mt-5 ml-5 pr-4 items-center text-md bg-slate-900 text-slate-50 border-solid border-slate-900`}
-    //       >
-    //         <span className="shrink">Add to cart</span>
-    //         <svg
-    //           xmlns="http://www.w3.org/2000/svg"
-    //           fill="none"
-    //           viewBox="0 0 24 24"
-    //           strokeWidth={1.5}
-    //           stroke="currentColor"
-    //           className="mx-4 h-6 w-6"
-    //         >
-    //           <path
-    //             strokeLinecap="round"
-    //             strokeLinejoin="round"
-    //             d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-    //           />
-    //         </svg>
-    //       </Button>
-    //     </div>
-    //   ))}
-    // </div>
-
-    // <div className="flex flex-wrap gap-8">
-    //   {productArray.map((product) => (
-    //     <span key={product.id} className="flex flex-col items-center">
-    //       <span className="h-auto w-40">
-    //         <img
-    //           className="h-auto w-full"
-    //           src={product.productImage}
-    //           alt={`a photo of ${product.productName}`}
-    //         />
-    //       </span>
-    //       <p>{product.productName}</p>
-    //       <p> #{product.price}</p>
-    //       <Button
-    //         classname={` hover:bg-green-300 text-center justify-center flex  w-50 hover:text-slate-950   pt-2 pb-2 pl-4 rounded-full mt-5 ml-5 pr-4 items-center text-md bg-slate-900 text-slate-50 border-solid border-slate-900`}
-    //       >
-    //         <span className="shrink">Add to cart</span>
-    //         <svg
-    //           xmlns="http://www.w3.org/2000/svg"
-    //           fill="none"
-    //           viewBox="0 0 24 24"
-    //           strokeWidth={1.5}
-    //           stroke="currentColor"
-    //           className="mx-4 h-6 w-6"
-    //         >
-    //           <path
-    //             strokeLinecap="round"
-    //             strokeLinejoin="round"
-    //             d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-    //           />
-    //         </svg>
-    //       </Button>
-    //     </span>
-    //   ))}
-    // </div>
-
-    <div className="flex max-h-full flex-wrap items-center gap-8 overflow-y-auto pb-40 pl-8">
-      {productArray.map((product) => (
-        <div key={product.id} className="">
-          <div className="h-40 w-20">
-            <img
-              className="h-full w-full object-cover"
-              src={product.productImage}
-              alt={`a photo of ${product.productName}`}
-            />
-          </div>
-          <p className="font-fontSec text-xs">{product.productName}</p>
-          <p className="font-sans text-sm"> ₦{product.price}</p>
-          <Button
-            classname={` hover:bg-green-300 text-center justify-center flex flex-wrap  w-auto hover:text-slate-950   pt-1 pb-1 pl-2 rounded-md mt-5 pr-2 items-center text-md bg-slate-900 text-slate-50 border-solid border-slate-900`}
+    <div className={`} max-h-full overflow-auto pb-64`}>
+      <div
+        className={`${isProduct ? 'hidden' : ''} flex max-h-full flex-wrap items-center justify-start gap-8 pl-10`}
+      >
+        {productArray.map((product) => (
+          <div
+            key={product.id}
+            className="flex flex-col items-center justify-center pb-2"
           >
-            <span className="shrink text-xs">Add to cart</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="mx-4 h-5 w-5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+            <div className="h-40 w-20">
+              <img
+                className="h-full w-full object-cover"
+                src={product.productImage}
+                alt={`a photo of ${product.productName}`}
               />
-            </svg>
-          </Button>
-        </div>
-      ))}
+            </div>
+            <a
+              onClick={() => setProduct(product)}
+              className="cursor-pointer font-fontSec text-sm hover:text-red-500"
+            >
+              {product.productName}
+            </a>
+            <p className="font-sans text-lg font-semibold"> ₦{product.price}</p>
+            <Button
+              classname={` hover:bg-green-300 text-center justify-center flex flex-wrap  w-auto hover:text-slate-950   pt-1 pb-1 pl-2 rounded-md mt-5 pr-2 items-center text-md bg-slate-900 text-slate-50 border-solid border-slate-900`}
+            >
+              <span className="shrink text-xs">Add to cart</span>
+              <CartIcon />
+            </Button>
+          </div>
+        ))}
+      </div>
+
+      <div
+        className={` pt-12 ${isProduct ? 'block' : 'hidden'} absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-scroll backdrop-blur-sm backdrop-filter`}
+      >
+        {isProduct && (
+          <SingleProductUi
+            cancel={cancel}
+            product={productObj}
+          ></SingleProductUi>
+        )}
+      </div>
+
+      <span
+        className={`${isProduct ? 'hidden' : ''} mt-20 flex items-center justify-between gap-4 pl-8 pr-8`}
+      >
+        <Button
+          onClick={decreasePageCount}
+          classname={`hover:text-green-700 cursor-pointer`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="h-6 w-6"
+            role="img"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061A1.125 1.125 0 0 1 21 8.689v8.122ZM11.25 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061a1.125 1.125 0 0 1 1.683.977v8.122Z"
+            />
+          </svg>
+        </Button>
+        <span className="grow border border-solid border-slate-950 text-center text-lg font-black">
+          {pageCount}
+        </span>
+        <Button
+          onClick={increasePageCount}
+          classname={`hover:text-green-700 cursor-pointer`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="h-6 w-6"
+            role="img"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3 8.689c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061A1.125 1.125 0 0 1 3 16.811V8.69ZM12.75 8.689c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061a1.125 1.125 0 0 1-1.683-.977V8.69Z"
+            />
+          </svg>
+        </Button>
+      </span>
     </div>
   );
 }

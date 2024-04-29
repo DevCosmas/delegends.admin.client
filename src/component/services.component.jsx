@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 
 function ServiceUi({ name, image }) {
   return (
-    <div className="relative mb-2 w-1/2">
-      <div className="relative h-60 w-60">
+    <div className="relative mb-2 w-1/2 ">
+      <div className="relative h-60 min-w-96 md:w-80">
         <img
-          className="h-60 w-60"
+          className="h-60 w-full md:w-full"
           src={image}
           alt={`A ${name} service image`}
         />

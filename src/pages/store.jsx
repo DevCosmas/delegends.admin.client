@@ -12,7 +12,7 @@ function StorePage() {
       <main className="relative">
         <div className=" fixed bottom-0 right-0 top-0 z-40 h-full w-full">
           <span className="flex h-full w-full">
-            <aside className=" h-full w-40 bg-green-900 pl-5 pt-2">
+            <aside className=" h-full w-60 bg-green-900 pl-5 pt-2">
               <span className="mx-4  mt-4 pt-4 text-center">
                 <img
                   className="my-4 mb-5 inline-block h-10 w-10 rounded-full"
@@ -20,7 +20,7 @@ function StorePage() {
                   alt="Customer profile pics"
                 />
               </span>
-              <ul className="w-full list-none font-marcellus text-xs capitalize text-slate-50">
+              <ul className="w-full list-none font-marcellus text-sm capitalize text-slate-50">
                 <li className="my-3 flex items-center gap-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +112,7 @@ function StorePage() {
                 </li>
               </ul>
             </aside>
-            <div className="w flex-1 overflow-y-visible border-solid border-red-500">
+            <div className="w flex-1  border-solid border-red-500">
               <header
                 className="mb-8 flex items-center justify-between gap-10 pb-4 pl-8 pr-8 pt-4
       "

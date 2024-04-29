@@ -45,7 +45,7 @@ function HomePage() {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 2,
           slidesToScroll: 3,
           infinite: true,
           dots: true,
@@ -54,7 +54,7 @@ function HomePage() {
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
           slidesToScroll: 2,
           initialSlide: 2,
         },
@@ -158,7 +158,7 @@ function HomePage() {
               className="absolute inset-0 bg-slate-950 bg-opacity-75 p-4"
               style={{ display: 'none' }}
             >
-              <p className="pt-14 font-lobster text-sm font-thin text-slate-200">
+              <p className="pt-14 font-lobster text-lg font-thin text-slate-200">
                 Allow our agro product to the do work and see 50% increase in
                 your agro produce. All Agro product are organically made, safe
                 for humans, animal and the environment.
@@ -181,7 +181,7 @@ function HomePage() {
               className="absolute inset-0 bg-slate-950 bg-opacity-75 p-4"
               style={{ display: 'none' }}
             >
-              <p className=" pt-14 align-middle font-lobster text-sm font-thin text-green-400 ">
+              <p className=" pt-14 align-middle font-lobster text-lg font-thin text-green-400 ">
                 Stop being reactive to your health. Be Proactive today with our
                 trusted and guaranteed supplements. Organically made.
               </p>
@@ -274,8 +274,8 @@ function HomePage() {
           </Button>
         </span> */}
         <div className="flex flex-wrap items-center gap-1">
-          <Button classname="hover:bg-green-700 flex max[600px]:w-4/5 max-w-4/5  md:w-1/2 pt-2 pb-2 pl-1 rounded-md mt-5 ml-5 pr-1 items-center text-sm bg-slate-900 text-slate-50 border-solid border-slate-900">
-            <span className="text-xs"> Start Shopping</span>
+          <Button classname="hover:bg-green-700 flex w-4/5 md:w-40 pt-2 pb-2 pl-1 rounded-md mt-5 ml-5 pr-1 items-center text-sm bg-slate-900 text-slate-50 border-solid border-slate-900">
+            <span className="px-4 text-sm"> Start Shopping</span>
             <span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -293,8 +293,8 @@ function HomePage() {
               </svg>
             </span>
           </Button>
-          <Button classname="hover:stroke-slate-50 hover:bg-slate-950 hover:font-light hover:text-slate-50 hover:border-none flex min-w-10 pt-2 pb-2 pl-1 border border-green-500 rounded-md mt-5 ml-5 pr-1 items-center text-sm text-slate-950 border-solid  md:w-1/2">
-            <span className="font-w text-xs font-semibold">
+          <Button classname="hover:stroke-slate-50 text-center px-4 hover:bg-slate-950 hover:font-light hover:text-slate-50 hover:border-none flex min-w-10 pt-2 pb-2 pl-1 border border-green-500 rounded-md mt-5 ml-5 pr-1 items-center text-lg text-slate-950 border-solid  w-4/5 md:w-40">
+            <span className="font-w px-4 text-sm font-semibold">
               Partner with us
             </span>
             <svg
@@ -302,7 +302,6 @@ function HomePage() {
               viewBox="0 0 256 256"
               xmlns="http://www.w3.org/2000/svg"
             >
-              {' '}
               <rect fill="none" height="256" width="256" />
               <path
                 d="M240.7,121.8,216,134.1,184,72.9l25-12.5a7.9,7.9,0,0,1,10.6,3.4l24.6,47.1A8,8,0,0,1,240.7,121.8Z"
@@ -361,51 +360,53 @@ function HomePage() {
             See What our Customers and Partners are saying About us
           </h1>
         </div>
-        <Slider {...settings}>
-          <ReviewCard
-            name="Jane Doe"
-            stars={5}
-            message={
-              'When delegends says your order is coming to you in two hours, expect it in the next one and half hour. Good customer Service'
-            }
-            image={cusTWo}
-          ></ReviewCard>
-          <ReviewCard
-            name="Amanda Doe"
-            stars={4}
-            message={`So far so good i can confirm a tremendous increase in my farm yield. It's just so amazing how this products work`}
-            image={cusOne}
-          ></ReviewCard>
-          <ReviewCard
-            name="Zara Doe"
-            stars={5}
-            message={
-              'Melenin-Tonic is an amazing product for every melanin skin. I completely recommend for anyone'
-            }
-            image={cusThree}
-          ></ReviewCard>
-          <ReviewCard
-            stars={5}
-            message={
-              'Since two years that i have handed over health well being to delegends store, i have not worry'
-            }
-            image={cusFour}
-          ></ReviewCard>
-          <ReviewCard
-            stars={3}
-            message={
-              'Since two years that i have handed over health well being to delegends store, i have not worry'
-            }
-            image={cusFive}
-          ></ReviewCard>
-          <ReviewCard
-            stars={5}
-            message={
-              'Since two years that i have handed over health well being to delegends store, i have not worry'
-            }
-            image={cusSix}
-          ></ReviewCard>
-        </Slider>
+        <span className=" pl-10">
+          <Slider {...settings}>
+            <ReviewCard
+              name="Jane Doe"
+              stars={5}
+              message={
+                'When delegends says your order is coming to you in two hours, expect it in the next one and half hour. Good customer Service'
+              }
+              image={cusTWo}
+            ></ReviewCard>
+            <ReviewCard
+              name="Amanda Doe"
+              stars={4}
+              message={`So far so good i can confirm a tremendous increase in my farm yield. It's just so amazing how this products work`}
+              image={cusOne}
+            ></ReviewCard>
+            <ReviewCard
+              name="Zara Doe"
+              stars={5}
+              message={
+                'Melenin-Tonic is an amazing product for every melanin skin. I completely recommend for anyone'
+              }
+              image={cusThree}
+            ></ReviewCard>
+            <ReviewCard
+              stars={5}
+              message={
+                'Since two years that i have handed over health well being to delegends store, i have not worry'
+              }
+              image={cusFour}
+            ></ReviewCard>
+            <ReviewCard
+              stars={3}
+              message={
+                'Since two years that i have handed over health well being to delegends store, i have not worry'
+              }
+              image={cusFive}
+            ></ReviewCard>
+            <ReviewCard
+              stars={5}
+              message={
+                'Since two years that i have handed over health well being to delegends store, i have not worry'
+              }
+              image={cusSix}
+            ></ReviewCard>
+          </Slider>
+        </span>
         <div className="mt-10 pl-10">
           <h1 className="mb-4 w-6  border-b-4 border-green-600 font-marcellus">
             FAQ

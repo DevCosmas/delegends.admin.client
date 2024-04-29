@@ -9,10 +9,10 @@ function FaqUi({ question, answer }) {
   };
 
   return (
-    <div className="mb-2 w-4/5 rounded-sm border-t-2 pb-2 pl-2 pr-2 pt-2 text-xs shadow-xl sm:w-4/5">
+    <div className="mb-2 w-4/5 rounded-sm border-t-2 px-4 pb-2 pl-2 pr-2 pt-2 text-xs shadow-xl sm:w-4/5 md:w-1/2">
       <div
         onClick={toggleFaq}
-        className="flex cursor-pointer items-center justify-between font-sans text-xs font-medium"
+        className="flex cursor-pointer items-center justify-between font-sans text-sm font-medium"
       >
         <span>{question}</span>
         <span

@@ -23,7 +23,7 @@ function ReviewCard({ message, image, stars, name }) {
   }
 
   return (
-    <div className=" mb-5 mr-4 mt-5 h-60 w-64 flex-shrink-0 grow-0 overflow-hidden rounded-lg bg-white p-6 pb-5 shadow-2xl">
+    <div className=" mb-5 ml-10 mr-10 mt-5 h-60 min-w-64 flex-shrink grow flex-wrap overflow-hidden rounded-lg bg-white p-6 pb-5 pl-10 shadow-2xl">
       <div className="mb-4 flex items-start justify-center">
         <img
           src={image}
@@ -32,7 +32,7 @@ function ReviewCard({ message, image, stars, name }) {
         />
       </div>
       <div className="flex flex-col items-center">
-        <p className="mb-2 text-xs font-medium">{message}</p>
+        <p className="mb-2 text-sm font-medium">{message}</p>
         <div className="flex">{starIcons}</div>
 
         <span className="mt-3 items-start text-left font-sans text-xs italic">
