@@ -109,6 +109,7 @@ function ProductPage() {
       <SignlCardUi isSingle={isProduct}>
         {isProduct && (
           <SingleProductUi
+            proceedToCart={proceedToAddCart}
             cancel={cancel}
             product={productObj}
           ></SingleProductUi>

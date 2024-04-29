@@ -3,7 +3,7 @@ import Button from './button.componet';
 import CartIcon from '../icons/cart';
 import GoBackIcon from '../icons/goBack.icon';
 
-function SingleProductUi({ product, cancel }) {
+function SingleProductUi({ product, cancel, proceedToCart }) {
   return (
     <div>
       <div className="text-center">
@@ -38,7 +38,11 @@ function SingleProductUi({ product, cancel }) {
         </p>
       </div>
       <div className="flex items-center gap-10 px-6 py-4 text-center">
-        <Button classname="hover:bg-green-300 text-center justify-center flex flex-wrap w-auto hover:text-slate-950 pt-1 pb-1 pl-2 rounded-md pr-2 items-center text-md bg-slate-900 text-slate-50 border-solid border-slate-900">
+        <Button
+          onClick={proceedToCart}
+          onClickParams={product}
+          classname="hover:bg-green-300 text-center justify-center flex flex-wrap w-auto hover:text-slate-950 pt-1 pb-1 pl-2 rounded-md pr-2 items-center text-md bg-slate-900 text-slate-50 border-solid border-slate-900"
+        >
           <span className="shrink text-xs">Add to cart</span>
           <CartIcon />
         </Button>
@@ -66,6 +70,7 @@ SingleProductUi.propTypes = {
     price: PropTypes.number.isRequired,
   }).isRequired,
   cancel: PropTypes.func,
+  proceedToCart: PropTypes.func,
 };
 
 export default SingleProductUi;
