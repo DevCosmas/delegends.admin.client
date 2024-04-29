@@ -5,7 +5,7 @@ import GoBackIcon from '../icons/goBack.icon';
 
 function SingleProductUi({ product, cancel }) {
   return (
-    <div className="mx-auto w-full overflow-hidden rounded-lg bg-white pb-8 shadow-lg sm:w-1/2">
+    <div>
       <div className="text-center">
         <img
           className="mx-auto max-h-40 max-w-full object-contain"

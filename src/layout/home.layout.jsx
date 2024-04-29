@@ -77,16 +77,16 @@ function HomePage() {
           className="hidden
          gap-4 sm:flex"
         >
-          <a className="text-xs capitalize hover:text-green-700" href="#">
+          <a className="text-sm capitalize hover:text-green-700" href="#">
             start shoping
           </a>
-          <a className="text-xs   capitalize hover:text-green-700 " href="#">
+          <a className="text-sm   capitalize hover:text-green-700 " href="#">
             FAQ
           </a>
-          <a className="text-xs  capitalize hover:text-green-700" href="#">
+          <a className="text-sm  capitalize hover:text-green-700" href="#">
             Services
           </a>
-          <a className="text-xs  capitalize hover:text-green-700" href="#">
+          <a className="text-sm  capitalize hover:text-green-700" href="#">
             Contact Us
           </a>
         </nav>

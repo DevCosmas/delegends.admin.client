@@ -7,11 +7,20 @@ import Button from '../component/button.componet';
 import { products } from '../utils/db';
 import CartIcon from '../icons/cart';
 import SingleProductUi from '../component/single.product';
+import SignlCardUi from '../component/single.comp';
+import AddToCartUi from '../component/addCart';
 
 function ProductPage() {
   const [pageCount, setPageCount] = useState(1);
   const [isProduct, setIsProduct] = useState(false);
   const [productObj, selectProduct] = useState(null);
+  const [isCart, setIsCart] = useState(false);
+
+  function proceedToAddCart(product) {
+    setIsCart(true);
+    setIsProduct(false);
+    selectProduct(product);
+  }
 
   function setProduct(product) {
     console.log(product);
@@ -20,6 +29,7 @@ function ProductPage() {
   }
   function cancel() {
     setIsProduct(false);
+    setIsCart(false);
     selectProduct(null);
   }
   function increasePageCount() {
@@ -85,6 +95,8 @@ function ProductPage() {
             </a>
             <p className="font-sans text-lg font-semibold"> ₦{product.price}</p>
             <Button
+              onClick={proceedToAddCart}
+              onClickParams={product}
               classname={` hover:bg-green-300 text-center justify-center flex flex-wrap  w-auto hover:text-slate-950   pt-1 pb-1 pl-2 rounded-md mt-5 pr-2 items-center text-md bg-slate-900 text-slate-50 border-solid border-slate-900`}
             >
               <span className="shrink text-xs">Add to cart</span>
@@ -94,16 +106,18 @@ function ProductPage() {
         ))}
       </div>
 
-      <div
-        className={` pt-12 ${isProduct ? 'block' : 'hidden'} absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-scroll backdrop-blur-sm backdrop-filter`}
-      >
+      <SignlCardUi isSingle={isProduct}>
         {isProduct && (
           <SingleProductUi
             cancel={cancel}
             product={productObj}
           ></SingleProductUi>
         )}
-      </div>
+      </SignlCardUi>
+
+      <SignlCardUi isSingle={isCart}>
+        {isCart && <AddToCartUi product={productObj}></AddToCartUi>}
+      </SignlCardUi>
 
       <span
         className={`${isProduct ? 'hidden' : ''} mt-20 flex items-center justify-between gap-4 pl-8 pr-8`}

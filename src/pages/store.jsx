@@ -20,8 +20,8 @@ function StorePage() {
                   alt="Customer profile pics"
                 />
               </span>
-              <ul className="w-full list-none font-marcellus text-sm capitalize text-slate-50">
-                <li className="my-3 flex items-center gap-2">
+              <ul className="w-full list-none pr-8 font-marcellus text-lg capitalize text-slate-50">
+                <li className="my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -45,7 +45,7 @@ function StorePage() {
                     </span>
                   </Link>
                 </li>
-                <li className="my-3 flex items-center gap-2">
+                <li className="my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -69,7 +69,7 @@ function StorePage() {
                     </span>
                   </Link>
                 </li>
-                <li className="my-3 flex items-center gap-2 text-xs">
+                <li className="my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -93,7 +93,7 @@ function StorePage() {
                     </span>
                   </Link>
                 </li>
-                <li className="my-3 flex items-center gap-2">
+                <li className="my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
