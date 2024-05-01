@@ -1,11 +1,13 @@
 // import { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
-import StoreLogo from '../component/store.logo';
+import PropTypes from 'prop-types';
+
+// import StoreLogo from '../component/store.logo';
 import cusThree from './../img/cus-9.jpg';
 
-function StorePage() {
-  const newOrder = true;
-  const newCart = true;
+function StorePage({ cartNum }) {
+  // const newOrder = true;
+  // const newCart = true;
 
   return (
     <div>
@@ -38,11 +40,7 @@ function StorePage() {
                   </svg>
 
                   <Link to={'/store'}>
-                    <span
-                      className={` after:ml-0.5 after:text-yellow-300 after:content-['*']`}
-                    >
-                      product
-                    </span>
+                    <span>product</span>
                   </Link>
                 </li>
                 <li className="my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900">
@@ -63,7 +61,7 @@ function StorePage() {
 
                   <Link to={'/store/my_order'}>
                     <span
-                      className={`${newOrder ? ` after:ml-0.5 after:text-yellow-300 after:content-['*']` : ''}`}
+                    // className={`${newOrder ? ` after:ml-0.5 after:text-yellow-300 after:content-['*']` : ''}`}
                     >
                       my order
                     </span>
@@ -86,10 +84,13 @@ function StorePage() {
                   </svg>
 
                   <Link to={'/store/my_cart'}>
-                    <span
-                      className={`${newCart ? ` after:ml-0.5 after:text-yellow-300 after:content-['*']` : ''}`}
-                    >
-                      my cart
+                    <span>
+                      my cart{' '}
+                      {cartNum !== 0 && (
+                        <sup className="rounded-full bg-red-800 p-1 text-center text-xs text-slate-50">
+                          {cartNum}
+                        </sup>
+                      )}
                     </span>
                   </Link>
                 </li>
@@ -112,8 +113,8 @@ function StorePage() {
                 </li>
               </ul>
             </aside>
-            <div className="w flex-1  border-solid border-red-500">
-              <header
+            <div className="w relative flex-1 border-solid border-red-500">
+              {/* <header
                 className="mb-8 flex items-center justify-between gap-10 pb-4 pl-8 pr-8 pt-4
       "
               >
@@ -162,7 +163,7 @@ function StorePage() {
                     </svg>
                   </button>
                 </form>
-              </header>
+              </header> */}
               <Outlet></Outlet>
             </div>
           </span>
@@ -171,4 +172,9 @@ function StorePage() {
     </div>
   );
 }
+
+StorePage.propTypes = {
+  cartNum: PropTypes.number.isRequired,
+};
+
 export default StorePage;

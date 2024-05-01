@@ -2,10 +2,41 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import Button from './button.componet';
 import GoBackIcon from '../icons/goBack.icon';
+// import { useCart } from '../utils/useCart';
+// import { actionTypes } from '../utils/action.types';
 
 function AddToCartUi({ product, cancel }) {
   const [Qty, setQty] = useState(1);
   const price = product.price * Qty;
+  const [isAdded, setIsAdded] = useState(false);
+
+  function saveCart() {
+    const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existingItemIndex = existingCart.findIndex(
+      (item) => item.id === product._id,
+    );
+    const parsedPrice = parseFloat(price);
+    const parsedQuantity = parseInt(Qty);
+    if (existingItemIndex !== -1) {
+      existingCart[existingItemIndex].quantity += parsedQuantity;
+      existingCart[existingItemIndex].totalPrice += parsedPrice;
+    } else {
+      const cartToBeSaved = {
+        name: product.productName,
+        price: price,
+        totalPrice: price * Qty,
+        quantity: Number(Qty),
+        image: product.productImage,
+        id: product._id,
+      };
+
+      existingCart.push(cartToBeSaved);
+    }
+
+    localStorage.setItem('cart', JSON.stringify(existingCart));
+    setIsAdded(true);
+  }
+
   return (
     <form className="flex flex-col items-start justify-center gap-4 pb-5 pl-5 pr-4 pt-3">
       <Button
@@ -30,7 +61,7 @@ function AddToCartUi({ product, cancel }) {
         </label>
         <input
           type="number"
-          className=" px-4"
+          className=" border px-4"
           name=""
           value={Qty > 1 ? Qty : 1}
           id=""
@@ -65,19 +96,18 @@ function AddToCartUi({ product, cancel }) {
           value={price > product.price ? price : product.price}
         />
       </div>
-      <span className=" mt-8 flex items-center justify-between gap-5 uppercase">
-        <button className="w-20 cursor-pointer rounded-full bg-green-800 pb-2 pl-2 pr-2 pt-2 uppercase text-slate-50 hover:bg-green-300 hover:text-slate-800">
-          add
-        </button>
-        <button
-          className=" cursor-pointer rounded-full bg-red-300 pb-2 pl-2 pr-2 pt-2 uppercase hover:bg-red-800 hover:text-slate-200"
-          disabled
+      <span className=" mt-8 flex items-center justify-between gap-5 text-center uppercase">
+        <span
+          onClick={() => saveCart()}
+          className="w-20 cursor-pointer rounded-full bg-green-800 pb-2 pl-2 pr-2 pt-2 uppercase text-slate-50 hover:bg-green-300 hover:text-slate-800"
         >
+          add
+        </span>
+        <button className=" cursor-pointer rounded-full bg-red-300 pb-2 pl-2 pr-2 pt-2 text-center uppercase hover:bg-red-800 hover:text-slate-200">
           continue shoping
         </button>
         <button
-          className=" cursor-pointer rounded-full border border-green-900 pb-2 pl-2 pr-2 pt-2 uppercase hover:bg-blue-900 hover:text-slate-50"
-          disabled
+          className={` ${isAdded ? 'block' : 'hidden'} cursor-pointer rounded-full border border-green-900 pb-2 pl-2 pr-2 pt-2 text-center uppercase hover:bg-blue-900 hover:text-slate-50`}
         >
           checkout
         </button>
@@ -92,9 +122,11 @@ AddToCartUi.propTypes = {
     productName: PropTypes.string.isRequired,
     productDescription: PropTypes.string.isRequired,
     productContent: PropTypes.string.isRequired,
-
     price: PropTypes.number.isRequired,
+    _id: PropTypes.string,
   }).isRequired,
   cancel: PropTypes.func,
+  addToCart: PropTypes.func,
+  addCartParams: PropTypes.object,
 };
 export default AddToCartUi;

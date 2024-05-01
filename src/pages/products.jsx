@@ -9,12 +9,13 @@ import CartIcon from '../icons/cart';
 import SingleProductUi from '../component/single.product';
 import SignlCardUi from '../component/single.comp';
 import AddToCartUi from '../component/addCart';
-
+import StoreLogo from '../component/store.logo';
 function ProductPage() {
   const [pageCount, setPageCount] = useState(1);
   const [isProduct, setIsProduct] = useState(false);
   const [productObj, selectProduct] = useState(null);
   const [isCart, setIsCart] = useState(false);
+  // const cartObj = [];
 
   function proceedToAddCart(product) {
     setIsCart(true);
@@ -23,7 +24,7 @@ function ProductPage() {
   }
 
   function setProduct(product) {
-    console.log(product);
+    setIsCart(false);
     setIsProduct(true);
     selectProduct(product);
   }
@@ -38,6 +39,12 @@ function ProductPage() {
   function decreasePageCount() {
     setPageCount((prev) => (prev > 1 ? prev - 1 : 1));
   }
+
+  // function addToCart(product) {
+  //   console.log(product);
+  //   cartObj.push(product);
+  //   localStorage.setItem('cart', cartObj);
+  // }
   // const { data: products, isLoading } = useQuery({
   //   queryKey: ['products'],
   //   queryFn: async () => {
@@ -71,7 +78,54 @@ function ProductPage() {
   // }
 
   return (
-    <div className={`} max-h-full overflow-auto pb-64`}>
+    <div className={`max-h-full overflow-auto pb-64`}>
+      <header className="sticky left-0 right-0 top-0 z-40 flex items-center justify-between bg-white p-4">
+        <StoreLogo></StoreLogo>
+        <form className="flex items-center gap-4">
+          <div className="flex-grow">
+            <input
+              type="text"
+              className="w-full rounded-full border border-solid border-slate-950 px-3 py-2 text-xs outline-none"
+              placeholder="Search here"
+              aria-label="Search products"
+            />
+          </div>
+          <select
+            className="rounded-full border-none px-3 py-2 text-xs outline-none  hover:text-green-300"
+            aria-label="Select category"
+          >
+            <option className="text-xs hover:bg-red-500" value="">
+              Category
+            </option>
+            <option className="text-xs" value="health">
+              Health
+            </option>
+            <option className="text-xs" value="skin-care">
+              Skin Care
+            </option>
+            <option className="text-xs" value="agro">
+              Agro
+            </option>
+          </select>
+
+          <button type="submit" aria-label="Search">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="h-6 w-6 text-slate-950 hover:text-green-500 focus:text-green-500"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+              />
+            </svg>
+          </button>
+        </form>
+      </header>
       <div
         className={`${isProduct ? 'hidden' : ''} flex max-h-full flex-wrap items-center justify-start gap-8 pl-10`}
       >
