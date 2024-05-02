@@ -6,21 +6,31 @@ import StoreLogo from '../component/store.logo';
 import { useEffect, useState } from 'react';
 import SignlCardUi from '../component/single.comp';
 import GoBackIcon from '../icons/goBack.icon';
+import CheckOutUi from '../component/checkout.component';
 
 function MyCartPage({ myCart }) {
   const [itemToEdit, setItemToEdit] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
+  const [isCheckout, setIsCheckout] = useState(false);
+
   const [Qty, setQty] = useState(1);
 
   useEffect(() => {
     if (itemToEdit) {
-      setQty(itemToEdit.quantity);
+      setQty(Number(itemToEdit.quantity));
     }
   }, [itemToEdit]);
 
   function cancel() {
     setIsEdit(false);
+    setIsCheckout(false);
     setItemToEdit(null);
+  }
+
+  function checkout() {
+    setIsEdit(false);
+    setItemToEdit(null);
+    setIsCheckout(true);
   }
 
   function findItem(itemId) {
@@ -39,7 +49,9 @@ function MyCartPage({ myCart }) {
     );
 
     if (existingItemIndex !== -1) {
-      existingCart[existingItemIndex].quantity = Qty;
+      existingCart[existingItemIndex].quantity = Number(Qty);
+      existingCart[existingItemIndex].totalPrice =
+        Number(Qty) * itemToEdit.price;
     }
 
     localStorage.setItem('cart', JSON.stringify(existingCart));
@@ -141,7 +153,10 @@ function MyCartPage({ myCart }) {
             >
               clear cart
             </button>
-            <button className=" flex items-center gap-1 rounded bg-green-300 px-2 py-1 uppercase text-slate-950 hover:bg-green-700 hover:text-slate-50">
+            <button
+              onClick={() => checkout()}
+              className=" flex items-center gap-1 rounded bg-green-300 px-2 py-1 uppercase text-slate-950 hover:bg-green-700 hover:text-slate-50"
+            >
               <span>checkout</span>
               <CartIcon></CartIcon>
             </button>
@@ -211,6 +226,11 @@ function MyCartPage({ myCart }) {
               </span>
             </form>
           )}
+        </SignlCardUi>
+      )}
+      {isCheckout && (
+        <SignlCardUi isSingle={isCheckout}>
+          <CheckOutUi cancel={cancel} cart={myCart}></CheckOutUi>
         </SignlCardUi>
       )}
     </div>

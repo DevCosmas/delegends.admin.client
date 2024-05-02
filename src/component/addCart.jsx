@@ -7,7 +7,7 @@ import GoBackIcon from '../icons/goBack.icon';
 
 function AddToCartUi({ product, cancel }) {
   const [Qty, setQty] = useState(1);
-  const price = product.price * Qty;
+  // const price = product.price * Qty;
   const [isAdded, setIsAdded] = useState(false);
 
   function saveCart() {
@@ -15,7 +15,7 @@ function AddToCartUi({ product, cancel }) {
     const existingItemIndex = existingCart.findIndex(
       (item) => item.id === product._id,
     );
-    const parsedPrice = parseFloat(price);
+    const parsedPrice = parseFloat(product.price);
     const parsedQuantity = parseInt(Qty);
     if (existingItemIndex !== -1) {
       existingCart[existingItemIndex].quantity += parsedQuantity;
@@ -23,8 +23,8 @@ function AddToCartUi({ product, cancel }) {
     } else {
       const cartToBeSaved = {
         name: product.productName,
-        price: price,
-        totalPrice: price * Qty,
+        price: product.price,
+        totalPrice: product.price * Number(Qty),
         quantity: Number(Qty),
         image: product.productImage,
         id: product._id,
@@ -93,7 +93,7 @@ function AddToCartUi({ product, cancel }) {
           type="number"
           name=""
           id=""
-          value={price > product.price ? price : product.price}
+          value={product.price * Qty}
         />
       </div>
       <span className=" mt-8 flex items-center justify-between gap-5 text-center uppercase">
