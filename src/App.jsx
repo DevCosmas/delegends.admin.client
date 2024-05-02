@@ -3,6 +3,7 @@ import StorePage from './pages/store';
 import MyCartPage from './pages/cart';
 import MyOrderPage from './pages/order';
 import ProductPage from './pages/products';
+import SignUpPage from './pages/sign.up';
 // import { CartProvider } from './context/cart.context';
 
 // packages
@@ -46,10 +47,7 @@ function App() {
             <Route path="my_order" element={<MyOrderPage></MyOrderPage>} />
           </Route>
 
-          {/* <Route
-          path="signUp"
-          element={<SignUpPage />}
-        /> */}
+          <Route path="signUp" element={<SignUpPage />} />
           {/* <Route
           path="resetPassword"
           element={<ResetPasswordPage></ResetPasswordPage>}

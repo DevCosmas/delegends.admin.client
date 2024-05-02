@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
+import { DELIVERYFEE } from '../utils/constant';
 
 function CheckOutUi({ cart, cancel }) {
   const grandTotalArr = cart.map((item) => item.totalPrice);
-  const grandTotal = grandTotalArr.reduce(
+  const Total = grandTotalArr.reduce(
     (accumulator, currentValue) => accumulator + currentValue,
     0,
   );
@@ -57,10 +58,27 @@ function CheckOutUi({ cart, cancel }) {
 
         <label
           htmlFor="GrandTotal"
-          className="mt-4 flex w-4/5 flex-wrap items-center font-fontSec font-bold"
+          className="mb-4 mt-8 flex w-4/5 flex-col flex-wrap  font-fontSec "
         >
-          Grand Total
-          <input type="number" value={grandTotal} className="block w-4/5 " />
+          <span className="flex items-start justify-start gap-2 text-left">
+            <i>{`Total fee for ${cart <= 1 ? 'item' : 'items'}`}:</i>
+            <i>{Total}</i>
+          </span>
+          <span className="flex items-start justify-start gap-2 text-left">
+            <i>Delivery Fee :</i>
+            <i>{DELIVERYFEE}</i>
+          </span>
+          <div>
+            <span className="block py-2 font-sans font-semibold">
+              Grand Total
+            </span>
+            <input
+              type="number"
+              disabled
+              value={Total + DELIVERYFEE}
+              className="block w-4/5 "
+            />
+          </div>
         </label>
 
         <button
@@ -70,7 +88,7 @@ function CheckOutUi({ cart, cancel }) {
           Want to make any changes to Order
         </button>
 
-        <button className="mt-4 block w-4/5 rounded  bg-green-500 px-3 py-3 text-slate-50 hover:bg-green-900">{`Pay ${grandTotal}`}</button>
+        <button className="mt-4 block w-4/5 rounded  bg-green-500 px-3 py-3 text-slate-50 hover:bg-green-900">{`Pay ₦${Total + DELIVERYFEE}`}</button>
       </form>
     </div>
   );

@@ -15,6 +15,9 @@ function ProductPage() {
   const [isProduct, setIsProduct] = useState(false);
   const [productObj, selectProduct] = useState(null);
   const [isCart, setIsCart] = useState(false);
+  // const [isCheckout, setIsCheckout] = useState(false);
+  // const [myCart, setMyCart] = useState([]);
+  // let myCart = [];
   // const cartObj = [];
 
   function proceedToAddCart(product) {
@@ -28,10 +31,17 @@ function ProductPage() {
     setIsProduct(true);
     selectProduct(product);
   }
+
+  // function checkout() {
+  //   myCart.push(productObj);
+  //   setIsCart(false);
+  //   setIsCheckout(true);
+  // }
   function cancel() {
     setIsProduct(false);
     setIsCart(false);
     selectProduct(null);
+    // setIsCheckout(false);
   }
   function increasePageCount() {
     setPageCount((prev) => prev + 1);
@@ -171,7 +181,9 @@ function ProductPage() {
       </SignlCardUi>
 
       <SignlCardUi isSingle={isCart}>
-        {isCart && <AddToCartUi product={productObj}></AddToCartUi>}
+        {isCart && (
+          <AddToCartUi setIsCart={setIsCart} product={productObj}></AddToCartUi>
+        )}
       </SignlCardUi>
 
       <span

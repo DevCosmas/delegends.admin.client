@@ -274,7 +274,7 @@ function HomePage() {
           </Button>
         </span> */}
         <div className="flex flex-wrap items-center gap-1">
-          <Button classname="hover:bg-green-700 flex w-4/5 md:w-40 pt-2 pb-2 pl-1 rounded-md mt-5 ml-5 pr-1 items-center text-sm bg-slate-900 text-slate-50 border-solid border-slate-900">
+          <Button classname="hover:bg-green-700 flex w-4/5 md:w-60 pt-2 pb-2 pl-1 rounded-md mt-5 ml-5 pr-1 items-center text-sm bg-slate-900 text-slate-50 border-solid border-slate-900">
             <span className="px-4 text-sm"> Start Shopping</span>
             <span>
               <svg
@@ -293,7 +293,7 @@ function HomePage() {
               </svg>
             </span>
           </Button>
-          <Button classname="hover:stroke-slate-50 text-center px-4 hover:bg-slate-950 hover:font-light hover:text-slate-50 hover:border-none flex min-w-10 pt-2 pb-2 pl-1 border border-green-500 rounded-md mt-5 ml-5 pr-1 items-center text-lg text-slate-950 border-solid  w-4/5 md:w-40">
+          <Button classname="hover:stroke-slate-50 text-center px-4 hover:bg-slate-950 hover:font-light hover:text-slate-50 hover:border-none flex min-w-10 pt-2 pb-2 pl-1 border border-green-500 rounded-md mt-5 ml-5 pr-1 items-center text-lg text-slate-950 border-solid  w-4/5 md:w-60">
             <span className="font-w px-4 text-sm font-semibold">
               Partner with us
             </span>
