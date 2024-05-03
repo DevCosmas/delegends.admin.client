@@ -1,20 +1,21 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import Button from './button.componet';
+
 import GoBackIcon from '../icons/goBack.icon';
 import CheckOutUi from './checkout.component';
 import SignlCardUi from './single.comp';
-
-// import { useCart } from '../utils/useCart';
-// import { actionTypes } from '../utils/action.types';
+import { useNavigate } from 'react-router-dom';
 
 function AddToCartUi({ product, cancel }) {
   const [Qty, setQty] = useState(1);
-  // const price = product.price * Qty;
   const [isAdded, setIsAdded] = useState(false);
   const [isCheckout, setIsCheckout] = useState(false);
+  const [myCart, setMyCart] = useState([]);
+  const navigate = useNavigate();
 
-  let myCart = [];
+  function cancelCheckout() {
+    navigate('/store/my_cart');
+  }
 
   function saveCart() {
     const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -43,33 +44,32 @@ function AddToCartUi({ product, cancel }) {
     setIsAdded(true);
   }
 
-  // Big error, i will work on it later
   function checkout() {
-    myCart.push({
+    const updatedCart = [...myCart];
+    updatedCart.push({
       name: product.productName,
       price: product.price,
       totalPrice: product.price * Number(Qty),
       quantity: Number(Qty),
     });
-    console.log(myCart);
-    console.log(product);
-    window.alert(myCart);
-    // setIsCart(false);
+
+    setQty(1);
+    setMyCart(updatedCart);
     setIsCheckout(true);
   }
 
   return (
     <div>
-      <form className="flex flex-col items-start justify-center gap-4 pb-5 pl-5 pr-4 pt-3">
-        <Button
+      <div className="flex flex-col items-start justify-center gap-4 pb-5 pl-5 pr-4 pt-3">
+        <button
           onClick={cancel}
-          classname="hover:bg-red-300 text-center left-10 justify-center flex flex-wrap w-auto pt-1 pb-1 pl-2 rounded-md pr-2 items-center text-md text-slate-950 border-solid border-slate-900"
+          className="text-md left-10 flex w-auto flex-wrap items-center justify-center rounded-md border-solid border-slate-900 pb-1 pl-2 pr-2 pt-1 text-center text-slate-950 hover:bg-red-300"
         >
           <span className="flex shrink items-center gap-1  text-sm">
             <GoBackIcon></GoBackIcon>
             <span className="capitalize">go back</span>
           </span>
-        </Button>
+        </button>
         <input
           className="font-sans font-bold"
           type="text"
@@ -125,20 +125,23 @@ function AddToCartUi({ product, cancel }) {
           >
             add
           </span>
-          <button className=" cursor-pointer rounded-full bg-red-300 pb-2 pl-2 pr-2 pt-2 text-center uppercase hover:bg-red-800 hover:text-slate-200">
+          <span
+            onClick={cancel}
+            className=" cursor-pointer rounded-full bg-red-300 pb-2 pl-2 pr-2 pt-2 text-center uppercase hover:bg-red-800 hover:text-slate-200"
+          >
             continue shoping
-          </button>
-          <button
+          </span>
+          <span
             onClick={checkout}
             className={` ${isAdded ? 'block' : 'hidden'} cursor-pointer rounded-full border border-green-900 pb-2 pl-2 pr-2 pt-2 text-center uppercase hover:bg-blue-900 hover:text-slate-50`}
           >
             checkout
-          </button>
+          </span>
         </span>
-      </form>
+      </div>
       {isCheckout && (
         <SignlCardUi isSingle={isCheckout}>
-          <CheckOutUi cancel={cancel} cart={myCart}></CheckOutUi>
+          <CheckOutUi cancel={cancelCheckout} cart={myCart}></CheckOutUi>
         </SignlCardUi>
       )}
     </div>
@@ -155,8 +158,6 @@ AddToCartUi.propTypes = {
     _id: PropTypes.string,
   }).isRequired,
   cancel: PropTypes.func,
-  // setIsCart: PropTypes.func,
-
   addToCart: PropTypes.func,
   addCartParams: PropTypes.object,
 };

@@ -1,11 +1,10 @@
 import Button from '../component/button.componet';
 import FormUi from '../component/form';
-import { Link } from 'react-router-dom';
 
-function SignUpPage() {
+function SignUpAdminPage() {
   return (
     <FormUi>
-      <h1 className="text-left text-lg font-bold">Sign Up here</h1>
+      <h1 className="text-left text-lg font-bold">Sign Up here as an Admin</h1>
       <input
         className="w-4/5 rounded-md border px-2 py-2"
         type="email"
@@ -15,6 +14,11 @@ function SignUpPage() {
         className="w-4/5 rounded-md border px-2 py-2"
         type="text"
         placeholder="username"
+      />
+      <input
+        className="w-4/5 rounded-md border px-2 py-2"
+        type="text"
+        placeholder="Sponsor id"
       />
       <input
         className="w-4/5 rounded-md border px-2 py-2"
@@ -44,14 +48,7 @@ function SignUpPage() {
       >
         Submit
       </Button>
-
-      <span className="mt-5 text-xl">
-        Have an account? login{' '}
-        <Link className="text-blue-700" to={'/login'}>
-          Here
-        </Link>
-      </span>
     </FormUi>
   );
 }
-export default SignUpPage;
+export default SignUpAdminPage;
