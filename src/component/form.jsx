@@ -10,7 +10,7 @@ function FormUi({ children, apiCall }) {
       </Link>
       <form
         className="mx-auto my-auto flex w-5/6 flex-col items-center justify-center gap-3 rounded-md px-3  pb-10 pt-3 shadow-lg sm:w-1/2"
-        onSubmit={apiCall}
+        onSubmit={(e) => apiCall(e)}
       >
         {children}
       </form>

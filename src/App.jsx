@@ -35,7 +35,6 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools></ReactQueryDevtools>
-
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -59,7 +58,7 @@ function App() {
           <Route path="reset_token" element={<SendResetTokenPage />} />
           <Route path="set_new_password" element={<SetNewPasswordPage />} />
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter>{' '}
     </QueryClientProvider>
   );
 }
