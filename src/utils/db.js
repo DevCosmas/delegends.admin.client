@@ -17,13 +17,12 @@ export const products = [
     createdAt: '2024-04-10T03:59:15.466Z',
     price: 10000,
     productCategory: 'health',
-    productContent: {
-      'L-Arginine': '400 mg',
-      'L-Ornithine': '200 mg',
-      'L-Tyrosine': '25 mg',
-      'L-Cysteine': '20 mg',
-      'L-Lysine': '10 mg',
-    },
+    productContent: `L-Arginine-400 mg',
+      L-Ornithine-200 mg',
+      L-Tyrosine -25 mg',
+      L-Cysteine -20 mg',
+      L-Lysine-10 mg`,
+
     productDescription:
       'Based upon scientific research into the body’s normal function of tissue generation and lipid metabolism, Ami-Tone creates a dietary abundance of specific amino acids at preselected times and under controlled conditions. This allows us to influence the conditions and relative amino acid balances that support the utilization of fat for energy and the production of lean body tissue. Ami-Tone supports the efforts of those seeking to decrease their body fat content.',
     productImage:

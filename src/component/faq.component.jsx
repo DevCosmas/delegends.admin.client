@@ -9,20 +9,20 @@ function FaqUi({ question, answer }) {
   };
 
   return (
-    <div className="mb-2 w-4/5 rounded-sm border-t-2 px-4 pb-2 pl-2 pr-2 pt-2 text-xs shadow-xl sm:w-4/5 md:w-1/2">
+    <div className="w-90 mb-2 rounded-md border-t-2 px-4 py-4 pb-2 pl-2 pr-7 pt-2 text-lg shadow-xl sm:w-4/5 md:w-1/2 ">
       <div
         onClick={toggleFaq}
-        className="flex cursor-pointer items-center justify-between font-sans text-sm font-medium"
+        className="flex cursor-pointer items-center justify-between font-sans text-lg font-medium"
       >
         <span>{question}</span>
         <span
-          className={`${isOpen ? 'rotate-180 text-gray-900' : 'text-emerald-500'} cursor-pointer text-lg`}
+          className={`${isOpen ? 'rotate-180 text-gray-900' : 'text-emerald-500'} wi cursor-pointer text-2xl`}
         >
           &#9662;
         </span>
       </div>
       <div
-        className={`mt-1 ${isOpen ? 'block' : 'hidden'} border-t-2 border-green-400 py-2 pb-3 text-xs`}
+        className={`mt-1 ${isOpen ? 'block' : 'hidden'} border-t-2 border-green-400 py-2 pb-3 text-sm`}
       >
         {answer}
       </div>

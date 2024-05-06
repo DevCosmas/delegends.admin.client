@@ -79,12 +79,12 @@ function MyCartPage({ myCart }) {
   }
 
   return (
-    <div className="py-7">
+    <div className="overflow-x-scroll py-7 pr-10">
       <span className="mb-8 block px-10">
         <StoreLogo></StoreLogo>
       </span>
       {myCart.length === 0 && (
-        <div className="mt-10 flex flex-col items-center justify-center gap-3 px-10">
+        <div className="mt-10 flex flex-col items-center justify-center gap-3 overflow-visible px-10">
           <span className="text-center text-xl font-bold">
             Nothing in your cart
           </span>
@@ -98,8 +98,8 @@ function MyCartPage({ myCart }) {
         </div>
       )}
       {myCart.length >= 1 && (
-        <div className="w-full overflow-x-auto pl-10">
-          <table className="w-full table-auto">
+        <div className="w-full overflow-x-scroll px-2 py-2 ">
+          <table className="w-full table-auto overflow-x-scroll pr-10">
             <thead className="bg-gray-200 font-sans">
               <tr>
                 <th className="px-3 py-2 text-left"></th>

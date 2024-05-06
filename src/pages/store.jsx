@@ -1,24 +1,40 @@
 // import { useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
-// import StoreLogo from '../component/store.logo';
-import cusThree from './../img/cus-9.jpg';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import HomeIcon from '../icons/home.icon';
+import CartIcon from '../icons/cart';
+import OrderIcon from '../icons/order.icon';
 
 function StorePage({ cartNum }) {
-  // const newOrder = true;
-  // const newCart = true;
+  function useLocalStorage(key, initialValue) {
+    const [storedValue, setStoredValue] = useState(() => {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    });
+
+    useEffect(() => {
+      localStorage.setItem(key, JSON.stringify(storedValue));
+    }, [key, storedValue]);
+
+    return [storedValue, setStoredValue];
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  const [user, setUser] = useLocalStorage('user', null);
 
   return (
     <div>
       <main className="relative">
         <div className=" fixed bottom-0 right-0 top-0 z-40 h-full w-full">
           <span className="flex h-full w-full">
-            <aside className=" h-full w-60 bg-green-900 pl-5 pt-2">
-              <span className="mx-4  mt-4 pt-4 text-center">
+            <aside className=" hidden h-full w-60 bg-green-900 pl-5 pt-2 md:block">
+              <span className="mx-auto  mt-4 flex flex-col items-center justify-center pt-4 text-center text-slate-50">
+                <p>Welcome 🙌 {user.username}</p>
                 <img
                   className="my-4 mb-5 inline-block h-10 w-10 rounded-full"
-                  src={cusThree}
+                  src={user.profilePic}
                   alt="Customer profile pics"
                 />
               </span>
@@ -30,7 +46,7 @@ function StorePage({ cartNum }) {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="h-4 w-4"
+                    className="h-7 w-6"
                   >
                     <path
                       strokeLinecap="round"
@@ -44,20 +60,7 @@ function StorePage({ cartNum }) {
                   </Link>
                 </li>
                 <li className="my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="h-4 w-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                    />
-                  </svg>
+                  <OrderIcon></OrderIcon>
 
                   <Link to={'/store/my_order'}>
                     <span
@@ -74,7 +77,7 @@ function StorePage({ cartNum }) {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="h-4 w-4"
+                    className="h-7 w-6"
                   >
                     <path
                       strokeLinecap="round"
@@ -101,7 +104,7 @@ function StorePage({ cartNum }) {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="h-4 w-4"
+                    className="h-7 w-6"
                   >
                     <path
                       strokeLinecap="round"
@@ -114,59 +117,52 @@ function StorePage({ cartNum }) {
               </ul>
             </aside>
             <div className="w relative flex-1 border-solid border-red-500">
-              {/* <header
-                className="mb-8 flex items-center justify-between gap-10 pb-4 pl-8 pr-8 pt-4
-      "
-              >
-                <StoreLogo></StoreLogo>
-                <form className="flex items-center gap-4">
-                  <div className="flex-grow">
-                    <input
-                      type="text"
-                      className="w-full rounded-full border border-solid border-slate-950 px-3 py-2 text-xs outline-none"
-                      placeholder="Search here"
-                      aria-label="Search products"
-                    />
-                  </div>
-                  <select
-                    className="rounded-full border-none px-3 py-2 text-xs outline-none  hover:text-green-300"
-                    aria-label="Select category"
-                  >
-                    <option className="text-xs hover:bg-red-500" value="">
-                      Category
-                    </option>
-                    <option className="text-xs" value="health">
-                      Health
-                    </option>
-                    <option className="text-xs" value="skin-care">
-                      Skin Care
-                    </option>
-                    <option className="text-xs" value="agro">
-                      Agro
-                    </option>
-                  </select>
-
-                  <button type="submit" aria-label="Search">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="h-6 w-6 text-slate-950 hover:text-green-500 focus:text-green-500"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                      />
-                    </svg>
-                  </button>
-                </form>
-              </header> */}
               <Outlet></Outlet>
             </div>
           </span>
+          <nav className="top-100 absolute bottom-0 left-0 right-0 z-40 bg-green-700 px-2 py-4 text-slate-50 md:hidden">
+            <div
+              className="flex
+           items-center justify-center gap-8"
+            >
+              <NavLink to={'/store'}>
+                <span className="flex flex-col items-center justify-center hover:text-slate-300">
+                  <HomeIcon></HomeIcon>
+                  <p>Home</p>
+                </span>
+              </NavLink>
+              <NavLink to={'/store/my_cart'}>
+                <span className="flex flex-col items-center justify-center hover:text-slate-300">
+                  <CartIcon></CartIcon>
+                  <p>cart</p>
+                </span>
+              </NavLink>
+              <NavLink to={'/store/my_order'}>
+                <span className="flex flex-col items-center justify-center hover:text-slate-300">
+                  <OrderIcon></OrderIcon>
+                  <p>orders</p>
+                </span>
+              </NavLink>
+              <span className="flex flex-col items-center justify-center hover:text-slate-300">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                  />
+                </svg>
+
+                <p>me</p>
+              </span>
+            </div>
+          </nav>
         </div>
       </main>
     </div>
@@ -175,6 +171,7 @@ function StorePage({ cartNum }) {
 
 StorePage.propTypes = {
   cartNum: PropTypes.number.isRequired,
+  user: PropTypes.object,
 };
 
 export default StorePage;

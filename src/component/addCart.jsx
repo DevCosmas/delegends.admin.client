@@ -118,10 +118,10 @@ function AddToCartUi({ product, cancel }) {
             value={product.price * Qty}
           />
         </div>
-        <span className=" mt-8 flex items-center justify-between gap-5 text-center uppercase">
+        <span className=" mt-8 flex flex-wrap items-center justify-between gap-5 text-center uppercase">
           <span
             onClick={() => saveCart()}
-            className="w-20 cursor-pointer rounded-full bg-green-800 pb-2 pl-2 pr-2 pt-2 uppercase text-slate-50 hover:bg-green-300 hover:text-slate-800"
+            className="w-20 grow cursor-pointer rounded-full bg-green-800 pb-2 pl-2 pr-2 pt-2 uppercase text-slate-50 hover:bg-green-300 hover:text-slate-800"
           >
             add
           </span>
@@ -133,7 +133,7 @@ function AddToCartUi({ product, cancel }) {
           </span>
           <span
             onClick={checkout}
-            className={` ${isAdded ? 'block' : 'hidden'} cursor-pointer rounded-full border border-green-900 pb-2 pl-2 pr-2 pt-2 text-center uppercase hover:bg-blue-900 hover:text-slate-50`}
+            className={` ${isAdded ? 'block' : 'hidden'} grow cursor-pointer rounded-full border border-green-900 pb-2 pl-2 pr-2 pt-2 text-center uppercase hover:bg-blue-900 hover:text-slate-50`}
           >
             checkout
           </span>

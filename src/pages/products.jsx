@@ -1,10 +1,11 @@
-// import { useQuery } from '@tanstack/react-query';
-// import axios from 'axios';
-// import { BASEURLDEV } from '../utils/constant';
+/* eslint-disable no-unused-vars */
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { BASEURLDEV } from '../utils/constant';
 import { useState } from 'react';
 import Button from '../component/button.componet';
-// import { Audio } from 'react-loader-spinner';
-import { products } from '../utils/db';
+import { Audio } from 'react-loader-spinner';
+// import { products } from '../utils/db';
 import CartIcon from '../icons/cart';
 import SingleProductUi from '../component/single.product';
 import SignlCardUi from '../component/single.comp';
@@ -15,7 +16,16 @@ function ProductPage() {
   const [isProduct, setIsProduct] = useState(false);
   const [productObj, selectProduct] = useState(null);
   const [isCart, setIsCart] = useState(false);
+  const [productName, setProductName] = useState('');
+  const [category, setCategory] = useState('');
+  const [toggleSearchBar, setToggleSearchBar] = useState(false);
 
+  function toggle() {
+    setToggleSearchBar((prevToggle) => !prevToggle);
+  }
+  function cancelToggle() {
+    if (toggleSearchBar) setToggleSearchBar(true);
+  }
   function proceedToAddCart(product) {
     setIsCart(true);
     setIsProduct(false);
@@ -33,89 +43,126 @@ function ProductPage() {
     setIsCart(false);
     selectProduct(null);
   }
-  function increasePageCount() {
+
+  const {
+    data: products,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ['products'],
+    queryFn: async () => {
+      const response = await axios.get(
+        `${BASEURLDEV}/product/allProduct?category=${category}&name=${productName}&page=${pageCount}`,
+      );
+
+      console.log(response);
+      return response.data;
+    },
+    keepPreviousData: true,
+    staleTime: 60000,
+  });
+  async function increasePageCount() {
     setPageCount((prev) => prev + 1);
-  }
-  function decreasePageCount() {
-    setPageCount((prev) => (prev > 1 ? prev - 1 : 1));
+    await refetch();
   }
 
-  // function addToCart(product) {
-  //   console.log(product);
-  //   cartObj.push(product);
-  //   localStorage.setItem('cart', cartObj);
-  // }
-  // const { data: products, isLoading } = useQuery({
-  //   queryKey: ['products'],
-  //   queryFn: async () => {
-  //     const response = await axios.get(`${BASEURLDEV}/product/allProduct`);
-  //     return response.data;
-  //   },
-  // });
+  async function decreasePageCount() {
+    if (pageCount > 1) {
+      setPageCount((prev) => (prev > 1 ? prev - 1 : 1));
+      await refetch();
+    }
+  }
 
-  // const productArray = products?.doc || [];
-  const productArray = products;
+  const handleFilter = async (e) => {
+    e.preventDefault();
+    await refetch();
+  };
 
-  // console.log(products);
+  const productArray = products?.doc || [];
 
-  // if (isLoading) {
-  //   return (
-  //     <div
-  //       className="h-full w-full px-64 "
-  //       style={{ backdropFilter: 'blur(8px)' }}
-  //     >
-  //       <div className="flex h-full items-center justify-center">
-  //         <Audio
-  //           height={40}
-  //           width={40}
-  //           color="green"
-  //           ariaLabel="loading"
-  //           wrapperStyle={{ backdropFilter: 'none' }}
-  //         />
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  if (isLoading) {
+    return (
+      <div
+        className="h-full w-full px-64 "
+        style={{ backdropFilter: 'blur(8px)' }}
+      >
+        <div className="flex h-full items-center justify-center">
+          <Audio
+            height={40}
+            width={40}
+            color="green"
+            ariaLabel="loading"
+            wrapperStyle={{ backdropFilter: 'none' }}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`max-h-full overflow-auto pb-64`}>
-      <header className="sticky left-0 right-0 top-0 z-40 flex items-center justify-between bg-white p-4">
-        <StoreLogo></StoreLogo>
-        <form className="flex items-center gap-4">
-          <div className="flex-grow">
+      <header className="flew-wrap sticky left-0 right-0 top-0 z-40 flex items-center justify-between bg-white p-4">
+        <div className={`${toggleSearchBar ? 'hidden' : ''}`}>
+          <StoreLogo></StoreLogo>
+        </div>
+        <form
+          className="flex items-center gap-4"
+          onSubmit={(e) => handleFilter(e)}
+        >
+          <div
+            className={` ${toggleSearchBar ? 'flex' : 'hidden'} min-w-4/5 flex-grow gap-3 rounded-full border border-solid border-slate-950 pr-3 md:flex`}
+          >
             <input
               type="text"
-              className="w-full rounded-full border border-solid border-slate-950 px-3 py-2 text-xs outline-none"
+              className="w-4/5 rounded-full  px-3 py-2 text-lg outline-none"
               placeholder="Search here"
               aria-label="Search products"
+              onChange={(e) => setProductName(e.target.value)}
             />
+            <select
+              className={`${toggleSearchBar ? 'block' : 'hidden'} w-30 rounded-full border-none px-3  py-2 text-lg   font-bold outline-none hover:text-slate-950 md:block`}
+              aria-label="Select category"
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option className="text-lg hover:bg-red-500" value="">
+                Category
+              </option>
+              <option className="text-lg" value="health">
+                Health
+              </option>
+              <option className="text-lg" value="skin">
+                Skin Care
+              </option>
+              <option className="text-lg" value="agro">
+                Agro
+              </option>
+            </select>
+            <button type="submit" aria-label="Search">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className={`  w-6 text-slate-950 hover:text-green-500 focus:text-green-500 md:block md:h-6`}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                />
+              </svg>
+            </button>
           </div>
-          <select
-            className="rounded-full border-none px-3 py-2 text-xs outline-none  hover:text-green-300"
-            aria-label="Select category"
-          >
-            <option className="text-xs hover:bg-red-500" value="">
-              Category
-            </option>
-            <option className="text-xs" value="health">
-              Health
-            </option>
-            <option className="text-xs" value="skin-care">
-              Skin Care
-            </option>
-            <option className="text-xs" value="agro">
-              Agro
-            </option>
-          </select>
 
-          <button type="submit" aria-label="Search">
+          <button onClick={toggle} type="submit" aria-label="Search">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="h-6 w-6 text-slate-950 hover:text-green-500 focus:text-green-500"
+              className={`${toggleSearchBar ? 'hidden' : ''} h-6 w-6 text-slate-950 hover:text-green-500 focus:text-green-500 md:hidden `}
             >
               <path
                 strokeLinecap="round"
@@ -124,15 +171,21 @@ function ProductPage() {
               />
             </svg>
           </button>
+          <button
+            onClick={toggle}
+            className={`${toggleSearchBar ? 'block' : 'hidden'} rounded-sm bg-gray-300 px-1 py-1 text-gray-700 md:hidden `}
+          >
+            cancel
+          </button>
         </form>
       </header>
       <div
-        className={`${isProduct ? 'hidden' : ''} flex max-h-full flex-wrap items-center justify-start gap-8 pl-10`}
+        className={`${isProduct ? 'hidden' : ''} flex max-h-full flex-wrap items-center justify-start gap-8 pl-10 pr-10`}
       >
         {productArray.map((product) => (
           <div
             key={product.id}
-            className="flex flex-col items-center justify-center pb-2"
+            className="flex grow flex-col items-center justify-center rounded-md px-8 py-8 pb-4 shadow-lg"
           >
             <div className="h-40 w-20">
               <img
@@ -179,9 +232,9 @@ function ProductPage() {
       <span
         className={`${isProduct ? 'hidden' : ''} mt-20 flex items-center justify-between gap-4 pl-8 pr-8`}
       >
-        <Button
+        <button
           onClick={decreasePageCount}
-          classname={`hover:text-green-700 cursor-pointer`}
+          className={`cursor-pointer hover:text-green-700`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -198,13 +251,15 @@ function ProductPage() {
               d="M21 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061A1.125 1.125 0 0 1 21 8.689v8.122ZM11.25 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061a1.125 1.125 0 0 1 1.683.977v8.122Z"
             />
           </svg>
-        </Button>
+        </button>
+
         <span className="grow border border-solid border-slate-950 text-center text-lg font-black">
           {pageCount}
         </span>
-        <Button
+
+        <button
           onClick={increasePageCount}
-          classname={`hover:text-green-700 cursor-pointer`}
+          className={`cursor-pointer hover:text-green-700`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -221,7 +276,7 @@ function ProductPage() {
               d="M3 8.689c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061A1.125 1.125 0 0 1 3 16.811V8.69ZM12.75 8.689c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061a1.125 1.125 0 0 1-1.683-.977V8.69Z"
             />
           </svg>
-        </Button>
+        </button>
       </span>
     </div>
   );

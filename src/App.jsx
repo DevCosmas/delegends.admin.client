@@ -16,6 +16,7 @@ import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState, useEffect } from 'react';
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -35,6 +36,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools></ReactQueryDevtools>
+
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -58,7 +60,7 @@ function App() {
           <Route path="reset_token" element={<SendResetTokenPage />} />
           <Route path="set_new_password" element={<SetNewPasswordPage />} />
         </Routes>
-      </BrowserRouter>{' '}
+      </BrowserRouter>
     </QueryClientProvider>
   );
 }

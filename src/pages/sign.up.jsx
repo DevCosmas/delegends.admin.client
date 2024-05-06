@@ -1,43 +1,44 @@
 import Button from '../component/button.componet';
 import FormUi from '../component/form';
-import { Link } from 'react-router-dom';
-import fileToDataURI from '../utils/create.imagae.blob';
+
+// import fileToDataURI from '../utils/create.imagae.blob';
 import { useState } from 'react';
-import axios from 'axios';
-import { BASEURLDEV } from '../utils/constant';
+import { useAuth } from '../context/user.context';
+import { useNavigate, Link } from 'react-router-dom';
+import { PROFILE_PIC } from '../utils/constant';
 
 function SignUpPage() {
-  const [file, setFile] = useState(null);
-  const [imgUri, setImgUri] = useState('');
+  // const [file, setFile] = useState(null);
+  // const [imgUri, setImgUri] = useState('');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const { signUp } = useAuth();
+  const navigate = useNavigate();
 
   async function SignUpApiCall(e) {
     e.preventDefault();
-    const signUpData = {
-      username,
-      email,
-      password,
-      confirmPassword,
-    };
-    if (file) {
-      try {
-        const createDataUri = await fileToDataURI(file[0]);
-        setImgUri(createDataUri);
-        signUpData.image = imgUri;
-        const response = await axios.post(
-          `${BASEURLDEV}/user/newCustomer`,
-          signUpData,
-        );
-        console.log(response);
-        console.log(response.data);
-      } catch (error) {
-        console.error(error.response);
-      }
-    } else {
-      console.log('No file selected');
+
+    try {
+      const signUpData = {
+        username,
+        email,
+        password,
+        confirmPassword,
+        image: PROFILE_PIC,
+      };
+
+      const signUpComplete = await signUp(
+        signUpData.email,
+        signUpData.password,
+        signUpData.confirmPassword,
+        signUpData.username,
+        signUpData.image,
+      );
+      if (signUpComplete) navigate('/login');
+    } catch (error) {
+      console.error(error.response);
     }
   }
 
@@ -68,7 +69,7 @@ function SignUpPage() {
         placeholder="confirm password"
         onChange={(e) => setConfirmPassword(e.target.value)}
       />
-      <label
+      {/* <label
         htmlFor="file-input"
         className="relative w-4/5 cursor-pointer rounded-md bg-gray-200 font-medium text-gray-700 hover:bg-gray-300"
       >
@@ -80,21 +81,19 @@ function SignUpPage() {
           className="sr-only"
           onChange={(e) => setFile(e.target.files)}
         />
-      </label>
+      </label> */}
 
       <Button
         classname={`text-lg bg-green-300 hover:bg-green-700 hover:text-slate-50 w-4/5 rounded-md border px-2 mt-5 py-2`}
       >
         Submit
       </Button>
-
       <span className="mt-5 text-xl">
-        Have an account? login{' '}
-        <Link className="text-blue-700" to={'/login'}>
+        {` Already have an account? Login `}
+        <Link className="text-blue-700" to={'/signUp'}>
           Here
         </Link>
       </span>
-      {imgUri !== '' && <img src={imgUri}></img>}
     </FormUi>
   );
 }

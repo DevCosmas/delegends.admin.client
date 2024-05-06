@@ -1,7 +1,7 @@
 function StoreLogo() {
   return (
     <div className="flex items-center">
-      <p className="font-mono font-semi-bold rounded-md border-solid border-slate-950 pb-1 pl-1 pr-3  pt-1 text-green-600">
+      <p className="font-mono font-semi-bold rounded-md border-solid border-slate-950 pb-1 pl-1 pr-3 pt-1  text-lg text-green-600">
         Delegends Store
       </p>
       <span>

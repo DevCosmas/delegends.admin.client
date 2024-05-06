@@ -1,5 +1,3 @@
-
-
 function CartIcon() {
   return (
     <svg
@@ -8,7 +6,7 @@ function CartIcon() {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className="mx-4 h-5 w-5"
+      className="mx-4 h-7 w-6"
       role="img"
     >
       <path

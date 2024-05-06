@@ -1,32 +1,45 @@
 import Button from '../component/button.componet';
 import FormUi from '../component/form';
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useAuth } from '../context/user.context';
 function LoginPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    const isLoggedIn = await login(email, password);
+    if (isLoggedIn) navigate('/store');
+  }
+
   return (
-    <FormUi>
+    <FormUi apiCall={handleLogin}>
       <h1 className="text-left text-lg font-bold">Login here</h1>
       <input
         className="w-4/5 rounded-md border px-2 py-2"
         type="email"
         placeholder="email"
+        onChange={(e) => setEmail(e.target.value)}
       />
 
       <input
         className="w-4/5 rounded-md border px-2 py-2"
         type="password"
         placeholder="password"
+        onChange={(e) => setPassword(e.target.value)} // Added e parameter here
       />
 
       <Button
-        classname={`text-lg bg-green-300 hover:bg-green-700 hover:text-slate-50 w-4/5 rounded-md border px-2 mt-5 py-2`}
+        classname={`mt-5 w-4/5 rounded-md border bg-green-300 px-2 py-2 text-lg hover:bg-green-700 hover:text-slate-50`} // Changed classname to className
       >
         Login
       </Button>
 
       <span className="mt-5 text-xl">
-        {` Dont't have an account? Sign Up`}
-
+        {` Don't have an account? Sign Up `}
         <Link className="text-blue-700" to={'/signUp'}>
           Here
         </Link>
@@ -34,4 +47,5 @@ function LoginPage() {
     </FormUi>
   );
 }
+
 export default LoginPage;
