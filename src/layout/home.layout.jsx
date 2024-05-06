@@ -161,7 +161,7 @@ function HomePage() {
         </div>
       </header>
       <main>
-        <div className="relative mt-9 hidden  flex-wrap items-center justify-start gap-0 px-7 md:flex">
+        <div className="relative mb-8 mt-9 hidden  flex-wrap items-center justify-start gap-0 px-7 md:flex">
           <span className="h-70 relative w-1/2 cursor-pointer md:shrink-0">
             <img
               src={agroBg}
@@ -209,7 +209,7 @@ function HomePage() {
           </span>
         </div>
         <div
-          className={`transition-background-image mt-5 h-screen  ${backgroundImageClass} bg-cover bg-center`}
+          className={`transition-background-image mt-5 h-screen md:hidden  ${backgroundImageClass} bg-cover bg-center`}
           style={{
             backgroundImage: showImage1
               ? `url(${supplementBg})`

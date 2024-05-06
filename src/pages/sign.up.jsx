@@ -90,7 +90,7 @@ function SignUpPage() {
       </Button>
       <span className="mt-5 text-xl">
         {` Already have an account? Login `}
-        <Link className="text-blue-700" to={'/signUp'}>
+        <Link className="text-blue-700" to={'/login'}>
           Here
         </Link>
       </span>

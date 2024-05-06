@@ -45,7 +45,10 @@ function CheckOutUi({ cart, cancel }) {
 
       if (res.status >= 200 && res.status < 300) {
         console.log(res);
-        const { authorization_url } = res.data.paystackTxUrl;
+        const { authorization_url } = res.data.doc.paystackTxUrl;
+        console.log(authorization_url);
+        console.log(res.data);
+
         window.location.assign(`${authorization_url}`);
       } else {
         console.error('Failed to place order:', res);

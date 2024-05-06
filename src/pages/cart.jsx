@@ -79,7 +79,7 @@ function MyCartPage({ myCart }) {
   }
 
   return (
-    <div className="overflow-x-scroll py-7 pr-10">
+    <div className=" py-7 pr-10">
       <span className="mb-8 block px-10">
         <StoreLogo></StoreLogo>
       </span>
@@ -98,7 +98,7 @@ function MyCartPage({ myCart }) {
         </div>
       )}
       {myCart.length >= 1 && (
-        <div className="w-full overflow-x-scroll px-2 py-2 ">
+        <div className="w-full  px-2 py-2 ">
           <table className="w-full table-auto overflow-x-scroll pr-10">
             <thead className="bg-gray-200 font-sans">
               <tr>
