@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import HomePage from './layout/home.layout';
 import StorePage from './pages/store';
 import MyCartPage from './pages/cart';
@@ -35,7 +36,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools></ReactQueryDevtools>
+      {/* <ReactQueryDevtools></ReactQueryDevtools> */}
 
       <BrowserRouter>
         <Routes>

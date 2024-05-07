@@ -5,15 +5,15 @@ import GoBackIcon from '../icons/goBack.icon';
 
 function SingleProductUi({ product, cancel, proceedToCart }) {
   return (
-    <div>
+    <div className="h-full">
       <div className="text-center">
         <img
-          className="mx-auto max-h-40 max-w-full object-contain"
+          className="mx-auto max-h-72 max-w-full object-contain"
           src={product.productImage}
           alt={`a photo of ${product.productName}`}
         />
       </div>
-      <div className="px-6 py-4">
+      <div className="px-6 py-4 ">
         <div className="mb-2 text-xl font-semibold uppercase">
           {product.productName}
         </div>
@@ -37,7 +37,7 @@ function SingleProductUi({ product, cancel, proceedToCart }) {
           Price: ₦{product.price}
         </p>
       </div>
-      <div className="flex items-center gap-10 px-6 py-4 text-center">
+      <div className="flex items-center gap-10 px-6 py-4 pb-40 text-center">
         <Button
           onClick={proceedToCart}
           onClickParams={product}

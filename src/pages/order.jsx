@@ -1,28 +1,33 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import StoreLogo from '../component/store.logo';
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { BASEURLDEV } from '../utils/constant';
-import axios from 'axios';
 import getToken from '../utils/getToken';
+import StoreLogo from '../component/store.logo';
+import { useState, useEffect } from 'react';
+import { useQuery, useIsFetching } from '@tanstack/react-query';
+import { BASEURLDEV } from '../utils/constant';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 function MyOrderPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [month, setMonth] = useState('');
   const [pageCount, setPageCount] = useState(1);
-
   const token = getToken();
+  const [isLoadingGlobal, setIsLoadingGlobal] = useState(false);
+  const isFetching = useIsFetching();
+
+  useEffect(() => {
+    setIsLoadingGlobal(isFetching > 0);
+  }, [isFetching]);
 
   const toggleFaq = () => {
     setIsOpen(!isOpen);
   };
 
-  async function refetchOnSubmit(e) {
+  async function handleRefetch(e) {
     e.preventDefault();
-    refetch();
+    await refetch();
   }
-
   async function increasePageCount(e) {
     e.preventDefault();
     setPageCount((prev) => prev + 1);
@@ -36,34 +41,29 @@ function MyOrderPage() {
       await refetch();
     }
   }
-
   const {
-    data: orders = [],
+    data: orders,
     isLoading,
+    isError,
     refetch,
   } = useQuery({
-    queryKey: ['products'],
-    queryFn: async () => {
-      try {
-        const response = await axios.get(
-          `${BASEURLDEV}/order/myOrder?${month !== '' ? `month=${month}` : ''}&page=${pageCount}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+    queryKey: ['orders', month, pageCount],
+    queryFn: async ({ queryKey }) => {
+      const [_, month, pageCount] = queryKey;
+      const response = await axios.get(
+        `${BASEURLDEV}/order/myOrder?${month !== '' ? `month=${month}` : ''}&page=${pageCount}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-        );
-        console.log(response);
-        return response.data;
-      } catch (error) {
-        console.log(error.response);
-        throw error;
-      }
+        },
+      );
+      return response.data.doc;
     },
     keepPreviousData: true,
-    staleTime: 60000,
   });
-  const orderArray = orders?.doc || [];
+
+  const orderArray = orders || [];
 
   return (
     <div>
@@ -72,16 +72,16 @@ function MyOrderPage() {
           <StoreLogo />
         </span>
 
-        <form onSubmit={refetchOnSubmit} className=" pb-10">
-          <span className="mb-10 flex w-full flex-wrap justify-start gap-4 px-4 sm:px-10">
+        <form onClick={(e) => handleRefetch(e)} className=" pb-10">
+          <span className="mb-10 flex w-full  flex-wrap justify-start gap-4  md:w-full">
             <select
               onChange={(e) => setMonth(e.target.value)}
               name="month"
-              className="w-90  rounded-full border-2 px-4 py-2 pr-2 md:w-auto "
+              className=" focus-visible: mx-auto w-4/5 rounded-md border-2 py-2 text-center "
             >
               <option value="">Select Month</option>
               <option value="January">January</option>
-              <option value="Febuary">February</option>
+              <option value="February">February</option>
               <option value="March">March</option>
               <option value="April">April</option>
               <option value="May">May</option>
@@ -93,21 +93,18 @@ function MyOrderPage() {
               <option value="November">November</option>
               <option value="December">December</option>
             </select>
-            <button className="rounded-full bg-blue-500 px-4 py-2 text-white">
-              Filter
-            </button>
           </span>
-          <h1 className="mb-2 text-center text-lg uppercase">My orders</h1>
-          {isLoading && <p className="text-red"> Fetching Order...</p>}
-
-          {!isLoading && (
-            <>
-              {orderArray.length === 0 && (
-                <div>
-                  <p>You have no orders yet 😰</p>
-                  <Link to="/store">Place Your Order now</Link>
-                </div>
-              )}
+          {!isLoading && !isError && (
+            <h1 className="mb-2 text-center text-lg uppercase">My orders</h1>
+          )}
+          {isLoading && (
+            <p className="mx-auto text-center text-red-700">
+              {' '}
+              Fetching Order...
+            </p>
+          )}
+          {!isError && !isLoading && (
+            <div className="overflow-y">
               {orderArray.map((order) => (
                 <div
                   key={order.id}
@@ -166,22 +163,30 @@ function MyOrderPage() {
                   </div>
                 </div>
               ))}
-              <div className="mt-4 flex items-center justify-between pb-10">
-                <button
-                  onClick={decreasePageCount}
-                  className="mx-2 rounded bg-gray-300 px-3 py-1 text-gray-700 hover:bg-gray-400"
-                >
-                  Previous
-                </button>
-                <span className="text-lg font-bold">{pageCount}</span>
-                <button
-                  onClick={increasePageCount}
-                  className="mx-2 rounded bg-gray-300 px-3 py-1 text-gray-700 hover:bg-gray-400"
-                >
-                  Next
-                </button>
-              </div>
-            </>
+            </div>
+          )}
+          {isError && (
+            <div className="mx-auto flex flex-col flex-wrap items-center justify-center px-2 py-2 text-xl">
+              <p>You have no orders yet 😰</p>
+              <Link to="/store">Place Your Order now</Link>
+            </div>
+          )}
+          {!isError && !isLoading && (
+            <div className="mt-4 flex items-center justify-between pb-10">
+              <button
+                onClick={decreasePageCount}
+                className="mx-2 rounded bg-gray-300 px-3 py-1 text-gray-700 hover:bg-gray-400"
+              >
+                Previous
+              </button>
+              <span className="text-lg font-bold">{pageCount}</span>
+              <button
+                onClick={increasePageCount}
+                className="mx-2 rounded bg-gray-300 px-3 py-1 text-gray-700 hover:bg-gray-400"
+              >
+                Next
+              </button>
+            </div>
           )}
         </form>
       </div>

@@ -116,11 +116,11 @@ function StorePage({ cartNum }) {
                 </li>
               </ul>
             </aside>
-            <div className="w relative flex-1 border-solid border-red-500">
+            <div className="w relative flex-1 overflow-y-scroll border-solid border-red-500">
               <Outlet></Outlet>
             </div>
           </span>
-          <nav className="top-100 absolute bottom-0 left-0 right-0 z-40 bg-green-700 px-2 py-4 text-slate-50 md:hidden">
+          <nav className="top-100 absolute bottom-0 left-0 right-0 z-40 mt-40 bg-green-700 px-2 py-4 capitalize text-slate-50 md:hidden">
             <div
               className="flex
            items-center justify-center gap-8"
