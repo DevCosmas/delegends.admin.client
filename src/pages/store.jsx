@@ -133,7 +133,17 @@ function StorePage({ cartNum }) {
               </NavLink>
               <NavLink to={'/store/my_cart'}>
                 <span className="flex flex-col items-center justify-center hover:text-slate-300">
-                  <CartIcon></CartIcon>
+                  <span
+                    className="flex gap-0
+                  "
+                  >
+                    <CartIcon></CartIcon>
+                    {cartNum !== 0 && (
+                      <sup className="mx-0 min-h-2 min-w-2 rounded-full bg-red-800 px-1 py-1 text-center text-xs text-slate-50">
+                        {cartNum}
+                      </sup>
+                    )}
+                  </span>
                   <p>cart</p>
                 </span>
               </NavLink>

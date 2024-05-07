@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { BASEURLDEV, DELIVERYFEE } from '../utils/constant';
 import { useState } from 'react';
 import axios from 'axios';
+import getToken from '../utils/getToken';
 
 function CheckOutUi({ cart, cancel }) {
   const [email, setEmail] = useState('');
@@ -18,9 +19,7 @@ function CheckOutUi({ cart, cancel }) {
     0,
   );
 
-  const userFromLS = localStorage.getItem('user');
-  const parsedUser = JSON.parse(userFromLS);
-  const token = parsedUser.token;
+  const token = getToken();
 
   async function placeOrder() {
     try {

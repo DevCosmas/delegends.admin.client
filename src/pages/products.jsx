@@ -83,7 +83,7 @@ function ProductPage() {
   if (isLoading) {
     return (
       <div
-        className="h-full w-full px-64 "
+        className="mx-auto my-auto h-full w-4/5 "
         style={{ backdropFilter: 'blur(8px)' }}
       >
         <div className="flex h-full items-center justify-center">
