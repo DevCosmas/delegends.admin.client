@@ -17,6 +17,7 @@ import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState, useEffect } from 'react';
+import NewDistPage from './pages/newDist';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -55,6 +56,7 @@ function App() {
           </Route>
 
           <Route path="signUp" element={<SignUpPage />} />
+          <Route path="partner" element={<NewDistPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="login_admin" element={<LoginAdminPage />} />
           <Route path="signUp_admin" element={<SignUpAdminPage />} />

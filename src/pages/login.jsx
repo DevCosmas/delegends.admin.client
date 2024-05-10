@@ -38,12 +38,24 @@ function LoginPage() {
         Login
       </Button>
 
-      <span className="mt-5 text-xl">
-        {` Don't have an account? Sign Up `}
-        <Link className="text-blue-700" to={'/signUp'}>
-          Here
-        </Link>
-      </span>
+      <div
+        className="flex
+       flex-col flex-wrap capitalize"
+      >
+        {' '}
+        <span className="mt-5 text-xl">
+          {` Don't have an account? Sign Up `}
+          <Link className="text-blue-700" to={'/signUp'}>
+            Here
+          </Link>
+        </span>
+        <span className="mt-5 text-xl">
+          {` forgot password? click `}
+          <Link className="text-blue-700" to={'/reset_token'}>
+            Here
+          </Link>
+        </span>
+      </div>
     </FormUi>
   );
 }

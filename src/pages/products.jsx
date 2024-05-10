@@ -51,16 +51,26 @@ function ProductPage() {
   } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
-      const response = await axios.get(
-        `${BASEURLDEV}/product/allProduct?category=${category}&name=${productName}&page=${pageCount}`,
-      );
+      try {
+        const response = await axios.get(
+          `${BASEURLDEV}/product/allProduct?category=${category}&name=${productName}&page=${pageCount}`,
+        );
 
-      console.log(response);
-      return response.data;
+        console.log(response);
+
+        if (response.status === 200) {
+          return response.data.doc;
+        } else {
+          throw new Error('Failed to fetch products');
+        }
+      } catch (error) {
+        console.log('Error fetching products:', error);
+        throw error;
+      }
     },
     keepPreviousData: true,
-    staleTime: 60000,
   });
+
   async function increasePageCount() {
     setPageCount((prev) => prev + 1);
     await refetch();
@@ -78,7 +88,7 @@ function ProductPage() {
     await refetch();
   };
 
-  const productArray = products?.doc || [];
+  const productArray = products;
 
   if (isLoading) {
     return (

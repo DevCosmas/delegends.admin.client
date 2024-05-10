@@ -247,66 +247,68 @@ function HomePage() {
               </span>
             </Button>
           </Link>
-          <Button classname="hover:stroke-slate-50 text-center px-4 hover:bg-slate-950 hover:font-light hover:text-slate-50 hover:border-none flex min-w-10 pt-2 pb-2 pl-1 border border-green-500 rounded-md mt-5 ml-5 pr-1 items-center text-lg text-slate-950 border-solid  w-4/5 md:w-72">
-            <span className="font-w px-4 text-lg font-semibold">
-              Partner with us
-            </span>
-            <svg
-              className="h-5 w-7 stroke-slate-950  hover:stroke-slate-50"
-              viewBox="0 0 256 256"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect fill="none" height="256" width="256" />
-              <path
-                d="M240.7,121.8,216,134.1,184,72.9l25-12.5a7.9,7.9,0,0,1,10.6,3.4l24.6,47.1A8,8,0,0,1,240.7,121.8Z"
-                fill="none"
-                // stroke="#000"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="8"
-              />
-              <path
-                d="M40,133.1,15.3,120.7a7.9,7.9,0,0,1-3.5-10.8L36.4,62.8A8,8,0,0,1,47,59.3L72,71.8Z"
-                fill="none"
-                // stroke="#000"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="8"
-              />
-              <path
-                d="M216,134.1l-16,18.8-36.8,36.8a8.5,8.5,0,0,1-7.6,2.1l-58-14.5a8,8,0,0,1-2.9-1.5L40,133.1"
-                fill="none"
-                // stroke="#000"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="8"
-              />
-              <path
-                d="M200,152.9l-44-32-12.8,9.6a32.1,32.1,0,0,1-38.4,0l-5.4-4.1a8.1,8.1,0,0,1-.9-12.1l39.2-39.1a7.9,7.9,0,0,1,5.6-2.3H184"
-                fill="none"
-                // stroke="#000"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="8"
-              />
-              <path
-                d="M72.6,71.8l51.3-15a8,8,0,0,1,5.5.4L164,72.9"
-                fill="none"
-                // stroke="#fff"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="8"
-              />
-              <path
-                d="M112,212.9l-30.1-7.6a7.4,7.4,0,0,1-3.3-1.7L56,184"
-                fill="none"
-                // stroke="#fff"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="8"
-              />
-            </svg>
-          </Button>
+          <Link to={'partner'}>
+            <Button classname="hover:stroke-slate-50 text-center px-4 hover:bg-slate-950 hover:font-light hover:text-slate-50 hover:border-none flex min-w-10 pt-2 pb-2 pl-1 border border-green-500 rounded-md mt-5 ml-5 pr-1 items-center text-lg text-slate-950 border-solid  w-4/5 md:w-72">
+              <span className="font-w px-4 text-lg font-semibold">
+                Partner with us
+              </span>
+              <svg
+                className="h-5 w-7 stroke-slate-950  hover:stroke-slate-50"
+                viewBox="0 0 256 256"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect fill="none" height="256" width="256" />
+                <path
+                  d="M240.7,121.8,216,134.1,184,72.9l25-12.5a7.9,7.9,0,0,1,10.6,3.4l24.6,47.1A8,8,0,0,1,240.7,121.8Z"
+                  fill="none"
+                  // stroke="#000"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="8"
+                />
+                <path
+                  d="M40,133.1,15.3,120.7a7.9,7.9,0,0,1-3.5-10.8L36.4,62.8A8,8,0,0,1,47,59.3L72,71.8Z"
+                  fill="none"
+                  // stroke="#000"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="8"
+                />
+                <path
+                  d="M216,134.1l-16,18.8-36.8,36.8a8.5,8.5,0,0,1-7.6,2.1l-58-14.5a8,8,0,0,1-2.9-1.5L40,133.1"
+                  fill="none"
+                  // stroke="#000"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="8"
+                />
+                <path
+                  d="M200,152.9l-44-32-12.8,9.6a32.1,32.1,0,0,1-38.4,0l-5.4-4.1a8.1,8.1,0,0,1-.9-12.1l39.2-39.1a7.9,7.9,0,0,1,5.6-2.3H184"
+                  fill="none"
+                  // stroke="#000"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="8"
+                />
+                <path
+                  d="M72.6,71.8l51.3-15a8,8,0,0,1,5.5.4L164,72.9"
+                  fill="none"
+                  // stroke="#fff"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="8"
+                />
+                <path
+                  d="M112,212.9l-30.1-7.6a7.4,7.4,0,0,1-3.3-1.7L56,184"
+                  fill="none"
+                  // stroke="#fff"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="8"
+                />
+              </svg>
+            </Button>
+          </Link>
         </div>
 
         <div className="mt-5 overflow-hidden pl-5">

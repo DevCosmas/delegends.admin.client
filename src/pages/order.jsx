@@ -15,6 +15,7 @@ function MyOrderPage() {
   const token = getToken();
   const [isLoadingGlobal, setIsLoadingGlobal] = useState(false);
   const isFetching = useIsFetching();
+  const [msg, setMsg] = useState('');
 
   useEffect(() => {
     setIsLoadingGlobal(isFetching > 0);
@@ -50,15 +51,21 @@ function MyOrderPage() {
     queryKey: ['orders', month, pageCount],
     queryFn: async ({ queryKey }) => {
       const [_, month, pageCount] = queryKey;
-      const response = await axios.get(
-        `${BASEURLDEV}/order/myOrder?${month !== '' ? `month=${month}` : ''}&page=${pageCount}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      try {
+        const response = await axios.get(
+          `${BASEURLDEV}/order/myOrder?${month !== '' ? `month=${month}` : ''}&page=${pageCount}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        },
-      );
-      return response.data.doc;
+        );
+
+        return response.data.doc;
+      } catch (error) {
+        setMsg(error.response.data.message);
+        console.log(error.response);
+      }
     },
     keepPreviousData: true,
   });
@@ -67,7 +74,7 @@ function MyOrderPage() {
 
   return (
     <div>
-      <div className="relative mb-10 overflow-auto px-2 py-2 pb-40">
+      <div className="relative mb-10 overflow-y-scroll px-2 py-2 pb-5">
         <span className="mt-8 block px-10 py-5">
           <StoreLogo />
         </span>
@@ -167,12 +174,17 @@ function MyOrderPage() {
           )}
           {isError && (
             <div className="mx-auto flex flex-col flex-wrap items-center justify-center px-2 py-2 text-xl">
-              <p>You have no orders yet 😰</p>
-              <Link to="/store">Place Your Order now</Link>
+              <p>{msg} 😰</p>
+              <Link
+                className="mt-5 w-5/6 rounded-md bg-green-700 px-4 py-4 text-center text-slate-50 hover:bg-green-300 hover:text-slate-900"
+                to="/store"
+              >
+                Place Your Order now
+              </Link>
             </div>
           )}
           {!isError && !isLoading && (
-            <div className="mt-4 flex items-center justify-between pb-10">
+            <div className="mt-10 flex items-center justify-between pb-10">
               <button
                 onClick={decreasePageCount}
                 className="mx-2 rounded bg-gray-300 px-3 py-1 text-gray-700 hover:bg-gray-400"
