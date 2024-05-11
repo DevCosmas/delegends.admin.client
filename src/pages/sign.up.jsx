@@ -1,5 +1,7 @@
 import Button from '../component/button.componet';
 import FormUi from '../component/form';
+import { RotatingLines } from 'react-loader-spinner';
+import Notify from '../component/notification';
 
 // import fileToDataURI from '../utils/create.imagae.blob';
 import { useState } from 'react';
@@ -14,13 +16,14 @@ function SignUpPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const { signUp } = useAuth();
+  const { signUp,isLoading,setIsLoading } = useAuth();
   const navigate = useNavigate();
 
   async function SignUpApiCall(e) {
+    setIsLoading(true)
     e.preventDefault();
 
-    try {
+   
       const signUpData = {
         username,
         email,
@@ -37,9 +40,7 @@ function SignUpPage() {
         signUpData.image,
       );
       if (signUpComplete) navigate('/login');
-    } catch (error) {
-      console.error(error.response);
-    }
+   
   }
 
   return (
@@ -83,17 +84,21 @@ function SignUpPage() {
         />
       </label> */}
 
+     {!isLoading &&  <div className='w-4/5 mx-auto border border-red-700'>
       <Button
-        classname={`text-lg bg-green-300 hover:bg-green-700 hover:text-slate-50 w-4/5 rounded-md border px-2 mt-5 py-2`}
+        classname={`text-lg bg-green-300 hover:bg-green-700 hover:text-slate-50 w-full rounded-md border px-2 mt-5 py-2`}
       >
         Submit
       </Button>
-      <span className="mt-5 text-xl">
+      <span className="mt-5 block text-xl">
         {` Already have an account? Login `}
         <Link className="text-blue-700" to={'/login'}>
           Here
         </Link>
       </span>
+      </div>}
+      {isLoading && <RotatingLines height="40" width="40"></RotatingLines>}
+      <Notify></Notify>
     </FormUi>
   );
 }

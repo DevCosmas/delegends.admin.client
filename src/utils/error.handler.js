@@ -1,17 +1,47 @@
-const handleServerError = (error, setMsg, setMsgStatus, setLoader) => {
-  if (error.response) {
-    if (error.response.status === 500) {
-      setMsg('Something went wrong. Please try again!');
-    } else if (error.response.status === 429) {
-      setMsg('Too many requests. Please try again later!');
-    } else {
-      setMsg(error.response.data.message || 'An error occurred');
-    }
-  } else {
-    setMsg('An error occurred');
-  }
-  setMsgStatus('fail');
-  setLoader(false);
+import { toast,Bounce } from "react-toastify";
+const handleServerError = (errorStatus,message) => {
+if(errorStatus===400){
+  toast.warning(message, {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    transition: Bounce,
+    });
+}
+if(errorStatus===401){
+return window.href='/login'
+}
+if(errorStatus===404){
+  toast.error(message, {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    transition: Bounce,
+    });
+}
+if(errorStatus==500){
+  toast.error('Something went really wrong here. Try again later', {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    transition: Bounce,
+    });
+}
 };
 
 export { handleServerError };

@@ -1,8 +1,9 @@
 import { createContext, useReducer, useContext, useState } from 'react';
-import Axios from 'axios';
+import axios from 'axios';
 import { BASEURLDEV } from '../utils/constant';
 import PropTypes from 'prop-types';
 import { handleServerError } from '../utils/error.handler';
+import notifySuccessMsg from '../utils/notify.succes';
 
 const AuthContext = createContext();
 
@@ -43,15 +44,12 @@ function AuthProvider({ children }) {
     initialState,
   );
 
-  const [msg, setMsg] = useState('');
-  const [msgStatus, setMsgStatus] = useState('');
-  const [loader, setLoader] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
 
-  // not done yet
+  const [isLoading, setIsLoading] = useState(false);
+
   async function signUp(email, password, confirmPassword, username, image) {
     try {
-      const response = await Axios.post(`${BASEURLDEV}/user/newCustomer`, {
+      const response = await axios.post(`${BASEURLDEV}/user/newCustomer`, {
         username,
         email,
         password,
@@ -61,20 +59,14 @@ function AuthProvider({ children }) {
 
       if (response.status === 201) {
         console.log(response);
-        setMsg(response.data.message);
-        setMsgStatus('success');
-        setIsSuccess(true);
-        dispatch({ type: 'signUp', payload: response.data });
+        setIsLoading(false);
+        notifySuccessMsg(response.data.message)
+        dispatch({ type: 'signUp', payload: response.data.message });
         return true;
-      } else {
-        const errorMessage = response.data.message || 'Something went wrong';
-        console.log(errorMessage);
-        setMsg(errorMessage);
-        setMsgStatus('fail');
       }
     } catch (error) {
-      console.log(error);
-      handleServerError(error, setMsg, setMsgStatus, setLoader);
+     setIsLoading(false)
+      handleServerError(error.response.status,error.response.data.message);
     }
   }
 
@@ -82,31 +74,38 @@ function AuthProvider({ children }) {
     try {
       if (!email && !password)
         throw new Error('Email and Password cannot be blank');
-      const res = await Axios.post(`${BASEURLDEV}/user/loginCustomer`, {
+      const response = await axios.post(`${BASEURLDEV}/user/loginCustomer`, {
         email,
         password,
       });
-      if (!res) throw new Error(res.data);
 
-      const { doc } = res.data;
-      dispatch({
-        type: 'login',
-        payload: { user: doc, token: doc.accessToken },
-      });
-      const expirationTime = new Date().getTime() + 60 * 60 * 1000;
-      localStorage.setItem(
-        'user',
-        JSON.stringify({
-          profilePic: doc.profilePic,
-          token: doc.accessToken,
-          username: doc.username,
-          expirationTime,
-          isAuthenticated: true,
-        }),
-      );
-      return true
+if(response.status==200){
+  
+  const { doc } = response.data;
+  notifySuccessMsg(response.data.message)
+
+  dispatch({
+    type: 'login',
+    payload: { user: doc, token: doc.accessToken },
+  });
+  const expirationTime = new Date().getTime() + 60 * 60 * 1000;
+  localStorage.setItem(
+    'user',
+    JSON.stringify({
+      profilePic: doc.profilePic,
+      token: doc.accessToken,
+      username: doc.username,
+      expirationTime,
+      isAuthenticated: true,
+    }),
+  );
+  setIsLoading(false)
+  return true
+}
     } catch (error) {
-      console.log(error);
+      console.log(error.response)
+      setIsLoading(false)
+      handleServerError(error.response.status,error.response.data.message)
     }
   }
   return (
@@ -116,10 +115,8 @@ function AuthProvider({ children }) {
         isAuthenticated,
         token,
         signUp,
-        msg,
-        msgStatus,
-        loader,
-        isSuccess,
+     setIsLoading,
+     isLoading,
         login,
       }}
     >

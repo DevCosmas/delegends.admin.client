@@ -2,12 +2,15 @@
 import Button from '../component/button.componet';
 import FormUi from '../component/form';
 import { RotatingLines } from 'react-loader-spinner';
+import Notify from '../component/notification';
 
 import { useState } from 'react';
 import { useAuth } from '../context/user.context';
 import { useNavigate, Link } from 'react-router-dom';
 import { BASEURLDEV, PROFILE_PIC } from '../utils/constant';
 import axios from 'axios';
+import notifySuccessMsg from '../utils/notify.succes';
+import { handleServerError } from '../utils/error.handler';
 
 function NewDistPage() {
   const [email, setEmail] = useState('');
@@ -46,9 +49,12 @@ function NewDistPage() {
       if (response.status === 201) {
         console.log(response);
         setIsLoading(false);
+        notifySuccessMsg(response.data.message)
+        
       }
     } catch (error) {
       setIsLoading(false);
+      handleServerError(error.response.status, error.response.data.message)
       console.log(error.response);
     }
   }
@@ -136,6 +142,7 @@ function NewDistPage() {
         Submit
       </Button>
       {isLoading && <RotatingLines height="40" width="40"></RotatingLines>}
+    <Notify></Notify>
     </FormUi>
   );
 }
