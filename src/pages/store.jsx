@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
+
 // import { useState } from 'react';
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -8,6 +10,21 @@ import CartIcon from '../icons/cart';
 import OrderIcon from '../icons/order.icon';
 
 function StorePage({ cartNum }) {
+  const { pathname } = useLocation();
+
+  function activeLink(type = null) {
+    var className = `bg-green-300 text-slate-900`;
+    var page =
+      pathname.split('/').length > 2
+        ? pathname.split('/')[2]
+        : pathname.split('/')[1];
+
+    if (type === page) {
+      return className;
+    } else {
+      return null;
+    }
+  }
   function useLocalStorage(key, initialValue) {
     const [storedValue, setStoredValue] = useState(() => {
       const item = localStorage.getItem(key);
@@ -21,7 +38,6 @@ function StorePage({ cartNum }) {
     return [storedValue, setStoredValue];
   }
 
-  // eslint-disable-next-line no-unused-vars
   const [user, setUser] = useLocalStorage('user', null);
 
   return (
@@ -39,7 +55,9 @@ function StorePage({ cartNum }) {
                 />
               </span>
               <ul className="w-full list-none pr-8 font-marcellus text-lg capitalize text-slate-50">
-                <li className="my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900">
+                <li
+                  className={`my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900 ${activeLink('store')}`}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -55,22 +73,26 @@ function StorePage({ cartNum }) {
                     />
                   </svg>
 
-                  <Link to={'/store'}>
+                  <NavLink to={'/store'}>
                     <span>product</span>
-                  </Link>
+                  </NavLink>
                 </li>
-                <li className="my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900">
+                <li
+                  className={`my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900 ${activeLink('my_order')}`}
+                >
                   <OrderIcon></OrderIcon>
 
-                  <Link to={'/store/my_order'}>
+                  <NavLink to={'/store/my_order'}>
                     <span
                     // className={`${newOrder ? ` after:ml-0.5 after:text-yellow-300 after:content-['*']` : ''}`}
                     >
                       my order
                     </span>
-                  </Link>
+                  </NavLink>
                 </li>
-                <li className="my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900">
+                <li
+                  className={`my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900 ${activeLink('my_cart')}`}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -86,7 +108,7 @@ function StorePage({ cartNum }) {
                     />
                   </svg>
 
-                  <Link to={'/store/my_cart'}>
+                  <NavLink to={'/store/my_cart'}>
                     <span>
                       my cart{' '}
                       {cartNum !== 0 && (
@@ -95,28 +117,30 @@ function StorePage({ cartNum }) {
                         </sup>
                       )}
                     </span>
-                  </Link>
+                  </NavLink>
                 </li>
-                <li className="my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="h-7 w-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15"
-                    />
-                  </svg>
-                  <span>logout</span>
-                </li>
+                <NavLink>
+                  <li className="my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="h-7 w-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15"
+                      />
+                    </svg>
+                    <span>logout</span>
+                  </li>
+                </NavLink>
               </ul>
             </aside>
-            <div className="w relative flex-1 overflow-y-scroll border-solid border-red-500">
+            <div className="w flex-1 overflow-y-scroll border-solid border-red-500">
               <Outlet></Outlet>
             </div>
           </span>

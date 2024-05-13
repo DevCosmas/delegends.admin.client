@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { createContext, useReducer, useContext, useState } from 'react';
 import axios from 'axios';
-import { BASEURLDEV } from '../utils/constant';
+import { BASEURLDEV, BASEURLPROD } from '../utils/constant';
 import PropTypes from 'prop-types';
 import { handleServerError } from '../utils/error.handler';
 import notifySuccessMsg from '../utils/notify.succes';
@@ -44,12 +45,11 @@ function AuthProvider({ children }) {
     initialState,
   );
 
-
   const [isLoading, setIsLoading] = useState(false);
 
   async function signUp(email, password, confirmPassword, username, image) {
     try {
-      const response = await axios.post(`${BASEURLDEV}/user/newCustomer`, {
+      const response = await axios.post(`${BASEURLPROD}/user/newCustomer`, {
         username,
         email,
         password,
@@ -60,13 +60,13 @@ function AuthProvider({ children }) {
       if (response.status === 201) {
         console.log(response);
         setIsLoading(false);
-        notifySuccessMsg(response.data.message)
+        notifySuccessMsg(response.data.message);
         dispatch({ type: 'signUp', payload: response.data.message });
         return true;
       }
     } catch (error) {
-     setIsLoading(false)
-      handleServerError(error.response.status,error.response.data.message);
+      setIsLoading(false);
+      handleServerError(error.response.status, error.response.data.message);
     }
   }
 
@@ -74,38 +74,37 @@ function AuthProvider({ children }) {
     try {
       if (!email && !password)
         throw new Error('Email and Password cannot be blank');
-      const response = await axios.post(`${BASEURLDEV}/user/loginCustomer`, {
+      const response = await axios.post(`${BASEURLPROD}/user/loginCustomer`, {
         email,
         password,
       });
 
-if(response.status==200){
-  
-  const { doc } = response.data;
-  notifySuccessMsg(response.data.message)
+      if (response.status == 200) {
+        const { doc } = response.data;
+        notifySuccessMsg(response.data.message);
 
-  dispatch({
-    type: 'login',
-    payload: { user: doc, token: doc.accessToken },
-  });
-  const expirationTime = new Date().getTime() + 60 * 60 * 1000;
-  localStorage.setItem(
-    'user',
-    JSON.stringify({
-      profilePic: doc.profilePic,
-      token: doc.accessToken,
-      username: doc.username,
-      expirationTime,
-      isAuthenticated: true,
-    }),
-  );
-  setIsLoading(false)
-  return true
-}
+        dispatch({
+          type: 'login',
+          payload: { user: doc, token: doc.accessToken },
+        });
+        const expirationTime = new Date().getTime() + 60 * 60 * 1000;
+        localStorage.setItem(
+          'user',
+          JSON.stringify({
+            profilePic: doc.profilePic,
+            token: doc.accessToken,
+            username: doc.username,
+            expirationTime,
+            isAuthenticated: true,
+          }),
+        );
+        setIsLoading(false);
+        return true;
+      }
     } catch (error) {
-      console.log(error.response)
-      setIsLoading(false)
-      handleServerError(error.response.status,error.response.data.message)
+      console.log(error.response);
+      setIsLoading(false);
+      handleServerError(error.response.status, error.response.data.message);
     }
   }
   return (
@@ -115,8 +114,8 @@ if(response.status==200){
         isAuthenticated,
         token,
         signUp,
-     setIsLoading,
-     isLoading,
+        setIsLoading,
+        isLoading,
         login,
       }}
     >

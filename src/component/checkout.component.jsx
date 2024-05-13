@@ -1,9 +1,12 @@
 /* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
-import { BASEURLDEV, DELIVERYFEE } from '../utils/constant';
+import { BASEURLDEV, BASEURLPROD, DELIVERYFEE } from '../utils/constant';
 import { useState } from 'react';
 import axios from 'axios';
 import getToken from '../utils/getToken';
+import { handleServerError } from '../utils/error.handler';
+import Notify from './notification';
+import notifySuccessMsg from '../utils/notify.succes';
 
 function CheckOutUi({ cart, cancel }) {
   const [email, setEmail] = useState('');
@@ -23,8 +26,8 @@ function CheckOutUi({ cart, cancel }) {
 
   async function placeOrder() {
     try {
-      const res = await axios.post(
-        `${BASEURLDEV}/checkout`,
+      const response = await axios.post(
+        `${BASEURLPROD}/checkout`,
         {
           fullname,
           products: cart,
@@ -42,18 +45,13 @@ function CheckOutUi({ cart, cancel }) {
         },
       );
 
-      if (res.status >= 200 && res.status < 300) {
-        console.log(res);
-        const { authorization_url } = res.data.doc.paystackTxUrl;
-        console.log(authorization_url);
-        console.log(res.data);
-
+      if (response.status >= 200 && response.status < 300) {
+        const { authorization_url } = response.data.doc.paystackTxUrl;
+        notifySuccessMsg(response.data.message);
         window.location.assign(`${authorization_url}`);
-      } else {
-        console.error('Failed to place order:', res);
       }
     } catch (error) {
-      console.error('Failed to place order:', error);
+      handleServerError(error.response.status, error.response.data.message);
     }
   }
 
@@ -64,7 +62,7 @@ function CheckOutUi({ cart, cancel }) {
   }
 
   return (
-    <div className="container mx-auto mb-20">
+    <div className="container z-40 mx-auto mb-20 mt-20 pt-8">
       <form
         onSubmit={(e) => handleOrder(e)}
         className="mx-auto flex max-w-lg flex-col items-center justify-center px-5 py-5"
@@ -165,6 +163,9 @@ function CheckOutUi({ cart, cancel }) {
 
         <button className="mt-4 block w-4/5 rounded  bg-green-500 px-3 py-3 text-slate-50 hover:bg-green-900">{`Pay ₦${Total + DELIVERYFEE}`}</button>
       </form>
+      <span className="pt-40">
+        <Notify></Notify>
+      </span>
     </div>
   );
 }

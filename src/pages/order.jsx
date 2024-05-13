@@ -4,7 +4,7 @@ import getToken from '../utils/getToken';
 import StoreLogo from '../component/store.logo';
 import { useState, useEffect } from 'react';
 import { useQuery, useIsFetching } from '@tanstack/react-query';
-import { BASEURLDEV } from '../utils/constant';
+import { BASEURLDEV, BASEURLPROD } from '../utils/constant';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -53,7 +53,7 @@ function MyOrderPage() {
       const [_, month, pageCount] = queryKey;
       try {
         const response = await axios.get(
-          `${BASEURLDEV}/order/myOrder?${month !== '' ? `month=${month}` : ''}&page=${pageCount}`,
+          `${BASEURLPROD}/order/myOrder?${month !== '' ? `month=${month}` : ''}&page=${pageCount}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

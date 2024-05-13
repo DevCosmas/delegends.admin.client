@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Button from '../component/button.componet';
 import FormUi from '../component/form';
 import axios from 'axios';
-import { BASEURLDEV } from '../utils/constant';
+import { BASEURLDEV, BASEURLPROD } from '../utils/constant';
 import { useNavigate } from 'react-router-dom';
 
 function SetNewPasswordPage() {
@@ -14,7 +14,7 @@ function SetNewPasswordPage() {
   async function setNewPasswordFn(token, password, confirmPassword) {
     try {
       const response = await axios.patch(
-        `${BASEURLDEV}/user/customerResetPassword`,
+        `${BASEURLPROD}/user/customerResetPassword`,
         {
           token,
           password,

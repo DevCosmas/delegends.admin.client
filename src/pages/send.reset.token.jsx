@@ -2,7 +2,7 @@
 import axios from 'axios';
 import Button from '../component/button.componet';
 import FormUi from '../component/form';
-import { BASEURLDEV } from '../utils/constant';
+import { BASEURLDEV, BASEURLPROD } from '../utils/constant';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ function SendResetTokenPage() {
   async function sendResetToken(email) {
     try {
       const response = await axios.post(
-        `${BASEURLDEV}/user/customerForgetPassword`,
+        `${BASEURLPROD}/user/customerForgetPassword`,
         { email },
       );
       if (response.status === 200) {

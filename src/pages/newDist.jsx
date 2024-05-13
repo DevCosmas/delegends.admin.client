@@ -7,7 +7,7 @@ import Notify from '../component/notification';
 import { useState } from 'react';
 import { useAuth } from '../context/user.context';
 import { useNavigate, Link } from 'react-router-dom';
-import { BASEURLDEV, PROFILE_PIC } from '../utils/constant';
+import { BASEURLDEV, BASEURLPROD, PROFILE_PIC } from '../utils/constant';
 import axios from 'axios';
 import notifySuccessMsg from '../utils/notify.succes';
 import { handleServerError } from '../utils/error.handler';
@@ -36,7 +36,7 @@ function NewDistPage() {
   ) {
     try {
       setIsLoading(true);
-      const response = await axios.post(`${BASEURLDEV}/dist/newDist`, {
+      const response = await axios.post(`${BASEURLPROD}/dist/newDist`, {
         email,
         firstname,
         lastname,
@@ -49,12 +49,11 @@ function NewDistPage() {
       if (response.status === 201) {
         console.log(response);
         setIsLoading(false);
-        notifySuccessMsg(response.data.message)
-        
+        notifySuccessMsg(response.data.message);
       }
     } catch (error) {
       setIsLoading(false);
-      handleServerError(error.response.status, error.response.data.message)
+      handleServerError(error.response.status, error.response.data.message);
       console.log(error.response);
     }
   }
@@ -142,7 +141,7 @@ function NewDistPage() {
         Submit
       </Button>
       {isLoading && <RotatingLines height="40" width="40"></RotatingLines>}
-    <Notify></Notify>
+      <Notify></Notify>
     </FormUi>
   );
 }
