@@ -84,7 +84,7 @@ function SignUpPage() {
         />
       </label> */}
 
-     {!isLoading &&  <div className='w-4/5 border flex flex-col justify-center items-center border-red-700'>
+     {!isLoading &&  <div className='w-4/5  flex flex-col justify-center items-center'>
       <Button
         classname={`text-lg bg-green-300 mx-auto hover:bg-green-700 hover:text-slate-50 w-full rounded-md border px-2 mt-5 py-2`}
       >
