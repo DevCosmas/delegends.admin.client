@@ -1,5 +1,6 @@
 import { toast, Bounce } from 'react-toastify';
-const handleServerError = (errorStatus, message) => {
+
+const handleServerError = (errorStatus, message, navigate = null) => {
   const toastProp = {
     position: 'bottom-center',
     autoClose: 3000,
@@ -11,16 +12,17 @@ const handleServerError = (errorStatus, message) => {
     theme: 'light',
     transition: Bounce,
   };
+
   if (errorStatus === 400) {
     toast.warning(message, { ...toastProp });
   }
-  if (errorStatus === 401) {
-    return (window.href = '/login');
+  if (errorStatus === 401 || message === 'jwt expired') {
+    navigate('/login');
   }
   if (errorStatus === 404) {
     toast.error(message, { ...toastProp });
   }
-  if (errorStatus == 500) {
+  if (errorStatus === 500) {
     toast.error('Something went really wrong here. Try again later', {
       ...toastProp,
     });

@@ -5,8 +5,10 @@ import StoreLogo from '../component/store.logo';
 import { useState, useEffect } from 'react';
 import { useQuery, useIsFetching } from '@tanstack/react-query';
 import { BASEURLDEV, BASEURLPROD } from '../utils/constant';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { handleServerError } from '../utils/error.handler';
+import Notify from '../component/notification';
 
 function MyOrderPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,11 +18,52 @@ function MyOrderPage() {
   const [isLoadingGlobal, setIsLoadingGlobal] = useState(false);
   const isFetching = useIsFetching();
   const [msg, setMsg] = useState('');
+  // const [newOrderToBeVerified, setNewOrderToBeVerified] = useState(null);
+  const [transactionRef, setTansactionRef] = useState(null);
+  const [orderObj, setOrderObj] = useState(null);
+
+  const unverifiedOrderFromLS = localStorage.getItem('orders');
+  const unverifiedOrderJSON = JSON.parse(unverifiedOrderFromLS);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoadingGlobal(isFetching > 0);
   }, [isFetching]);
 
+  useEffect(() => {
+    if (unverifiedOrderJSON.length >= 1) {
+      setOrderObj(unverifiedOrderJSON);
+    } else {
+      setOrderObj(null);
+    }
+  }, [orderObj, unverifiedOrderJSON]);
+
+  async function verifyTX(ref) {
+    try {
+      const response = await axios.get(`${BASEURLPROD}/verifyTx/${ref}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        console.log(response);
+      }
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+  // function removeItem(itemId) {
+  //   const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+  //   const itemIndexToRemove = existingCart.findIndex(
+  //     (item) => item.id === itemId,
+  //   );
+
+  //   if (itemIndexToRemove !== -1) {
+  //     existingCart.splice(itemIndexToRemove, 1);
+  //   }
+  //   localStorage.setItem('cart', JSON.stringify(existingCart));
+  // }
   const toggleFaq = () => {
     setIsOpen(!isOpen);
   };
@@ -53,7 +96,7 @@ function MyOrderPage() {
       const [_, month, pageCount] = queryKey;
       try {
         const response = await axios.get(
-          `${BASEURLPROD}/order/myOrder?${month !== '' ? `month=${month}` : ''}&page=${pageCount}`,
+          `${BASEURLDEV}/order/myOrder?${month !== '' ? `month=${month}` : ''}&page=${pageCount}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -63,6 +106,11 @@ function MyOrderPage() {
 
         return response.data.doc;
       } catch (error) {
+        handleServerError(
+          error.response.data,
+          error.response.data.message,
+          navigate,
+        );
         setMsg(error.response.data.message);
         console.log(error.response);
       }
@@ -74,11 +122,47 @@ function MyOrderPage() {
 
   return (
     <div>
-      <div className="relative mb-10 overflow-y-scroll px-2 py-2 pb-5">
+      <div className="relative mb-10  overflow-y-scroll px-2 py-2 pb-5">
         <span className="mt-8 block px-10 py-5">
           <StoreLogo />
         </span>
 
+        {orderObj !== null && (
+          <div>
+            <h3 className="mx-auto mb-1 mt-10 w-72 rounded-full bg-red-600 px-6 py-2 text-center font-fontSec text-2xl uppercase text-slate-50">
+              unverified order
+            </h3>
+            <p className="px-2 py-2 text-center text-lg font-bold capitalize">
+              kindly click on the verify button to verify payment for recent
+              order
+            </p>
+          </div>
+        )}
+        {orderObj !== null && (
+          <div className="mb-10">
+            {orderObj.map((order) => (
+              <div
+                className="gap4 flex flex-wrap items-center justify-between border-b px-4 py-4"
+                key={order.id}
+              >
+                <div>
+                  <sup className="rounded bg-red-700 px-1 py-1 text-xs capitalize text-slate-50">
+                    new
+                  </sup>
+                  <span className="ml-2 text-center text-lg capitalize">
+                    {order.products.map((product) => product.name).join(',')}
+                  </span>
+                </div>
+                <button
+                  onClick={() => verifyTX(order.txRef)}
+                  className="mt-5 w-40 rounded-md bg-green-500 px-2 py-2 text-center text-lg capitalize text-slate-50"
+                >
+                  verify
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
         <form onClick={(e) => handleRefetch(e)} className=" pb-10">
           <span className="mb-10 flex w-full  flex-wrap justify-start gap-4  md:w-full">
             <select
@@ -101,8 +185,11 @@ function MyOrderPage() {
               <option value="December">December</option>
             </select>
           </span>
+
           {!isLoading && !isError && (
-            <h1 className="mb-2 text-center text-lg uppercase">My orders</h1>
+            <h1 className="mb-1 mt-20 text-center text-lg uppercase">
+              My orders
+            </h1>
           )}
           {isLoading && (
             <p className="mx-auto text-center text-red-700">
@@ -202,6 +289,7 @@ function MyOrderPage() {
           )}
         </form>
       </div>
+      <Notify />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-const BASEURLPROD = 'https://delegends-store-1.onrender.com';
+const BASEURLPROD = 'https://delegends-store-1.onrender.com/api.delegend.store';
 const BASEURLDEV = 'http://localhost:8000/api.delegend.store';
 const DELIVERYFEE = 2000;
 const PROFILE_PIC =

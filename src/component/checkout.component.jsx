@@ -7,6 +7,8 @@ import getToken from '../utils/getToken';
 import { handleServerError } from '../utils/error.handler';
 import Notify from './notification';
 import notifySuccessMsg from '../utils/notify.succes';
+import { useNavigate } from 'react-router-dom';
+import shortid from 'shortid';
 
 function CheckOutUi({ cart, cancel }) {
   const [email, setEmail] = useState('');
@@ -15,6 +17,19 @@ function CheckOutUi({ cart, cancel }) {
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [deliveryState, setDeliveyState] = useState('');
   const [coupon, setCoupon] = useState('');
+
+  const navigate = useNavigate();
+
+  function saveOrder(order) {
+    const existingOrders = JSON.parse(localStorage.getItem('orders')) || [];
+    const existingOrderIndex = existingOrders.findIndex(
+      (existingOrder) => existingOrder.id === order.id,
+    );
+    if (existingOrderIndex === -1) {
+      existingOrders.push(order);
+      return localStorage.setItem('orders', JSON.stringify(existingOrders));
+    }
+  }
 
   const grandTotalArr = cart.map((item) => item.totalPrice);
   const Total = grandTotalArr.reduce(
@@ -46,12 +61,23 @@ function CheckOutUi({ cart, cancel }) {
       );
 
       if (response.status >= 200 && response.status < 300) {
+        const orderToSave = {
+          id: shortid.generate(),
+          products: cart,
+          txRef: response.data.doc.paystackTxUrl.reference,
+        };
+
+        saveOrder(orderToSave);
         const { authorization_url } = response.data.doc.paystackTxUrl;
         notifySuccessMsg(response.data.message);
         window.location.assign(`${authorization_url}`);
       }
     } catch (error) {
-      handleServerError(error.response.status, error.response.data.message);
+      handleServerError(
+        error.response.status,
+        error.response.data.message,
+        navigate,
+      );
     }
   }
 
