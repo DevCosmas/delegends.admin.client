@@ -135,7 +135,7 @@ function ProductPage() {
   );
 
   return (
-    <div className="max-h-full overflow-auto pb-64">
+    <div className="max-h-full overflow-auto pb-60">
       <header className="flew-wrap sticky left-0 right-0 top-0 z-40 flex items-center justify-between bg-white p-4">
         <div className={`${toggleSearchBar ? 'hidden' : ''}`}>
           <StoreLogo></StoreLogo>

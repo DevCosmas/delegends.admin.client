@@ -88,9 +88,9 @@ function MyCartPage({ myCart }) {
           <span className="text-center text-xl font-bold">
             Nothing in your cart
           </span>
-          <Link to={'/store'}>
+          <Link className="w-4/5 sm:w-72" to={'/store'}>
             <Button
-              classname={` text-center w-4/5 sm:w-72 bg-green-700 hover:bg-green-300 text-slate-50 hover:text-slate-950 rounded py-2 px-2 `}
+              classname={` text-center w-full  bg-green-700 hover:bg-green-300 text-slate-50 hover:text-slate-950 rounded py-2 px-2 `}
             >
               Go shoping
             </Button>

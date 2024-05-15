@@ -8,6 +8,8 @@ import { useState } from 'react';
 import HomeIcon from '../icons/home.icon';
 import CartIcon from '../icons/cart';
 import OrderIcon from '../icons/order.icon';
+import SettingIcon from '../icons/setting';
+import LogoutIcon from '../icons/logout.icon';
 
 function StorePage({ cartNum }) {
   const { pathname } = useLocation();
@@ -108,33 +110,26 @@ function StorePage({ cartNum }) {
                     />
                   </svg>
 
-                  <NavLink to={'/store/my_cart'}>
+                  <NavLink to={'/store/my_cart'} className="relative">
                     <span>
                       my cart{' '}
                       {cartNum !== 0 && (
-                        <sup className="rounded-full bg-red-800 p-1 text-center text-xs text-slate-50">
+                        <sup className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 transform rounded-full bg-red-800 p-1 px-2 py-1 text-center text-xs text-slate-50">
                           {cartNum}
                         </sup>
                       )}
                     </span>
                   </NavLink>
                 </li>
+                <NavLink to={'user_setting'}>
+                  <li className="my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900">
+                    <SettingIcon />
+                    <span>Setting</span>
+                  </li>
+                </NavLink>
                 <NavLink>
                   <li className="my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="h-7 w-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15"
-                      />
-                    </svg>
+                    <LogoutIcon />
                     <span>logout</span>
                   </li>
                 </NavLink>
@@ -144,6 +139,7 @@ function StorePage({ cartNum }) {
               <Outlet></Outlet>
             </div>
           </span>
+
           <nav className="top-100 absolute bottom-0 left-0 right-0 z-40 mt-40 bg-green-700 px-2 py-4 capitalize text-slate-50 md:hidden">
             <div
               className="flex
@@ -151,7 +147,11 @@ function StorePage({ cartNum }) {
             >
               <NavLink to={'/store'}>
                 <span className="flex flex-col items-center justify-center hover:text-slate-300">
-                  <HomeIcon></HomeIcon>
+                  <div
+                    className={`${activeLink('store')} rounded-lg px-1 py-1`}
+                  >
+                    <HomeIcon></HomeIcon>
+                  </div>
                   <p>Home</p>
                 </span>
               </NavLink>
@@ -161,37 +161,52 @@ function StorePage({ cartNum }) {
                     className="flex gap-0
                   "
                   >
-                    <CartIcon></CartIcon>
-                    {cartNum !== 0 && (
-                      <sup className="mx-0 min-h-2 min-w-2 rounded-full bg-red-800 px-1 py-1 text-center text-xs text-slate-50">
-                        {cartNum}
-                      </sup>
-                    )}
+                    <div
+                      className={`${activeLink('my_cart')} item-center
+                      flex rounded-lg px-1 py-2`}
+                    >
+                      <CartIcon></CartIcon>
+                      {cartNum !== 0 && (
+                        <sup className="ml-[-20px] flex h-4 w-4 items-center justify-center rounded-full bg-red-800 px-2 py-2 text-xs text-slate-50">
+                          {cartNum}
+                        </sup>
+                      )}
+                    </div>
                   </span>
                   <p>cart</p>
                 </span>
               </NavLink>
               <NavLink to={'/store/my_order'}>
                 <span className="flex flex-col items-center justify-center hover:text-slate-300">
-                  <OrderIcon></OrderIcon>
+                  <div
+                    className={`${activeLink('my_order')} item-center
+                      flex rounded-lg px-1 py-2`}
+                  >
+                    <OrderIcon></OrderIcon>
+                  </div>
                   <p>orders</p>
                 </span>
               </NavLink>
               <span className="flex flex-col items-center justify-center hover:text-slate-300">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="h-6 w-6"
+                <div
+                  className={`${activeLink('my_order')} item-center
+                      flex rounded-lg px-1 py-2`}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                  />
-                </svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="h-6 w-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                    />
+                  </svg>
+                </div>
 
                 <p>me</p>
               </span>

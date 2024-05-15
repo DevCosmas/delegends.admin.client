@@ -18,6 +18,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState, useEffect } from 'react';
 import NewDistPage from './pages/newDist';
+import UserSetting from './pages/user.setting';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -48,6 +49,7 @@ function App() {
             element={<StorePage cartNum={myCartItems.length} />}
           >
             <Route index element={<ProductPage></ProductPage>} />
+            <Route path="user_setting" element={<UserSetting />} />
             <Route
               path="my_cart"
               element={<MyCartPage myCart={myCartItems}></MyCartPage>}
@@ -56,6 +58,7 @@ function App() {
           </Route>
 
           <Route path="signUp" element={<SignUpPage />} />
+
           <Route path="partner" element={<NewDistPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="login_admin" element={<LoginAdminPage />} />

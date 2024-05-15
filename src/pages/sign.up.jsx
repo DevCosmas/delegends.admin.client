@@ -70,19 +70,7 @@ function SignUpPage() {
         placeholder="confirm password"
         onChange={(e) => setConfirmPassword(e.target.value)}
       />
-      {/* <label
-        htmlFor="file-input"
-        className="relative w-4/5 cursor-pointer rounded-md bg-gray-200 font-medium text-gray-700 hover:bg-gray-300"
-      >
-        <span className="inline-block px-4 py-2">Choose a Photo</span>
-        <input
-          id="file-input"
-          name="file-input"
-          type="file"
-          className="sr-only"
-          onChange={(e) => setFile(e.target.files)}
-        />
-      </label> */}
+   
 
      {!isLoading &&  <div className='w-4/5  flex flex-col justify-center items-center'>
       <Button
