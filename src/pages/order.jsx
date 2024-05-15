@@ -146,7 +146,7 @@ function MyOrderPage() {
                 key={order.id}
               >
                 <div>
-                  <sup className="rounded bg-red-700 px-1 py-1 text-xs capitalize text-slate-50">
+                  <sup className="rounded bg-orange-500 px-1 py-1 text-xs capitalize text-slate-50">
                     new
                   </sup>
                   <span className="ml-2 text-center text-lg capitalize">

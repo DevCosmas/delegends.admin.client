@@ -74,7 +74,7 @@ function AuthProvider({ children }) {
     try {
       if (!email && !password)
         throw new Error('Email and Password cannot be blank');
-      const response = await axios.post(`${BASEURLPROD}/user/loginCustomer`, {
+      const response = await axios.post(`${BASEURLDEV}/user/loginCustomer`, {
         email,
         password,
       });

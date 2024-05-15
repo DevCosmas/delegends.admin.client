@@ -209,7 +209,7 @@ function HomePage() {
           </span>
         </div>
         <div
-          className={`transition-background-image mt-5 h-screen md:hidden  ${backgroundImageClass} bg-cover bg-center`}
+          className={`transition-background-image mt-10 max-h-96 md:hidden  ${backgroundImageClass} bg-cover bg-center`}
           style={{
             backgroundImage: showImage1
               ? `url(${supplementBg})`
@@ -217,7 +217,7 @@ function HomePage() {
           }}
           onClick={() => showImage()}
         >
-          <div className="inset-0 flex h-full items-center justify-center bg-black bg-opacity-70 px-4 py-4">
+          <div className="inset-0 flex max-h-fit items-center justify-center bg-black bg-opacity-70 px-6 py-6">
             <div className="text-center text-white">
               <h1 className="mb-4 text-4xl font-bold">{textTitle}</h1>
               <p className="text-lg">{text}</p>
@@ -225,10 +225,10 @@ function HomePage() {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-1">
+        <div className="flex flex-wrap items-center gap-3">
           <Link className="w-4/5 md:w-72" to={'/signUp'}>
             <Button classname="hover:bg-green-700 flex  pt-2 pb-2 pl-1 rounded-md mt-5 ml-5 pr-1 items-center text-sm bg-slate-900 text-slate-50 border-solid border-slate-900 w-full ">
-              <span className="px-4 text-lg"> Start Shopping</span>
+              <span className="px-4 text-center text-lg"> Start Shopping</span>
               <span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -247,9 +247,12 @@ function HomePage() {
               </span>
             </Button>
           </Link>
-          <Link to={'partner'}>
-            <Button classname="hover:stroke-slate-50 text-center px-4 hover:bg-slate-950 hover:font-light hover:text-slate-50 hover:border-none flex min-w-10 pt-2 pb-2 pl-1 border border-green-500 rounded-md mt-5 ml-5 pr-1 items-center text-lg text-slate-950 border-solid  w-4/5 md:w-72">
-              <span className="font-w px-4 text-lg font-semibold">
+          <Link
+            className="flex w-4/5 items-center justify-center text-center md:w-72"
+            to={'partner'}
+          >
+            <Button classname="hover:stroke-slate-50 text-center px-4 hover:bg-slate-950 hover:font-light hover:text-slate-50 hover:border-none flex  pt-2 pb-2 pl-1 border border-green-500 rounded-md mt-5 ml-5 pr-1 items-center text-lg text-slate-950 border-solid  w-full md:w-72">
+              <span className="px-4 text-center font-sans text-lg font-semibold">
                 Partner with us
               </span>
               <svg
@@ -311,12 +314,12 @@ function HomePage() {
           </Link>
         </div>
 
-        <div className="mt-5 overflow-hidden pl-5">
+        <div className="mt-10 overflow-hidden pl-5">
           <h1 className=" mx-auto my-auto mt-5 w-full  pl-3 pr-3 pt-5 text-center font-sans text-xl font-medium text-green-600 max-md:text-center  max-sm:text-left">
             See What our Customers and Partners are saying About us
           </h1>
         </div>
-        <span className=" pl-10">
+        <span className="pl-10">
           <Slider {...settings}>
             <ReviewCard
               name="Jane Doe"
@@ -363,8 +366,8 @@ function HomePage() {
             ></ReviewCard>
           </Slider>
         </span>
-        <div className="mt-10 pl-10 pr-10">
-          <h1 className="mb-4 w-6 border-b-4  border-green-600 font-marcellus text-2xl">
+        <div className=" mt-10 w-full pl-10 pr-10 text-xl">
+          <h1 className="font-font-sans mb-4 w-10  border-b-4 border-green-600 text-3xl">
             FAQ
           </h1>
           <FaqUi
@@ -382,7 +385,7 @@ function HomePage() {
         </div>
 
         <div className="mt-10 overflow-hidden pl-10">
-          <h1 className="mb-4 w-6  border-b-4 border-green-600 font-marcellus">
+          <h1 className="mb-4 w-6 border-b-4 border-green-600 font-marcellus text-3xl">
             Services
           </h1>
           <Slider {...settings}>
@@ -403,7 +406,7 @@ function HomePage() {
         </div>
 
         <div className="mt-10 w-full overflow-hidden pl-10">
-          <h1 className="mb-4 w-10 border-b-4 border-green-600 font-marcellus text-2xl">
+          <h1 className="mb-8 w-40 border-b-4 border-green-600 font-marcellus text-2xl">
             Contact Us
           </h1>
           <div
@@ -411,15 +414,19 @@ function HomePage() {
            flex-wrap items-center gap-8 font-marcellus text-xs"
           >
             <div className=" max-w-[200px]">
-              <h3 className="mb-2 font-semibold uppercase">head office</h3>
-              <span className=" font-fontSec">
+              <h3 className="mb-2 text-lg font-semibold uppercase">
+                head office
+              </h3>
+              <span className=" font-fontSec text-sm">
                 Plot 12 Chief Olu Oshunkeye Crescents - Gbagada Industrial
                 Estate - Gbagada Lagos
               </span>
             </div>
             <div className=" max-w-[200px]">
-              <h3 className="mb-2 font-semibold uppercase">Abuja office</h3>
-              <span className="w-8 font-fontSec">
+              <h3 className="mb-2 text-lg font-semibold uppercase">
+                Abuja office
+              </h3>
+              <span className="w-8 font-fontSec text-sm">
                 wuse, oposite nnpc towers bassan plaze, Abuja{' '}
               </span>
             </div>
