@@ -16,7 +16,7 @@ const handleServerError = (errorStatus, message, navigate = null) => {
   if (errorStatus === 400) {
     toast.warning(message, { ...toastProp });
   }
-  if (errorStatus === 401 || message === 'jwt expired') {
+  if (errorStatus === 401 || message.includes('jwt')) {
     navigate('/login');
   }
   if (errorStatus === 404) {

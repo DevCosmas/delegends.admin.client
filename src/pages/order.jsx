@@ -1,45 +1,48 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import getToken from '../utils/getToken';
-import StoreLogo from '../component/store.logo';
-import { useState, useEffect } from 'react';
-import { useQuery, useIsFetching } from '@tanstack/react-query';
-import { BASEURLDEV, BASEURLPROD } from '../utils/constant';
-import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { handleServerError } from '../utils/error.handler';
+import getToken from '../utils/getToken';
+import { useState, useEffect } from 'react';
 import Notify from '../component/notification';
+import StoreLogo from '../component/store.logo';
+import VerificationButton from './verify.Tx.btn';
+import { Link, useNavigate } from 'react-router-dom';
+import notifySuccessMsg from '../utils/notify.succes';
+import { handleServerError } from '../utils/error.handler';
+import { BASEURLDEV, BASEURLPROD } from '../utils/constant';
+import { useQuery, useIsFetching } from '@tanstack/react-query';
 
 function MyOrderPage() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [month, setMonth] = useState('');
-  const [pageCount, setPageCount] = useState(1);
   const token = getToken();
-  const [isLoadingGlobal, setIsLoadingGlobal] = useState(false);
+  const navigate = useNavigate();
+
   const isFetching = useIsFetching();
   const [msg, setMsg] = useState('');
-  // const [newOrderToBeVerified, setNewOrderToBeVerified] = useState(null);
-  const [transactionRef, setTansactionRef] = useState(null);
-  const [orderObj, setOrderObj] = useState(null);
+  const [month, setMonth] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [orderObj, setOrderObj] = useState([]);
+  const [pageCount, setPageCount] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(null);
+  const [verifyLoading, setVerifyLoading] = useState(false);
+  const [isLoadingGlobal, setIsLoadingGlobal] = useState(false);
 
   const unverifiedOrderFromLS = localStorage.getItem('orders');
   const unverifiedOrderJSON = JSON.parse(unverifiedOrderFromLS);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoadingGlobal(isFetching > 0);
   }, [isFetching]);
 
   useEffect(() => {
-    if (unverifiedOrderJSON.length >= 1) {
+    if (unverifiedOrderJSON && unverifiedOrderJSON.length >= 1) {
       setOrderObj(unverifiedOrderJSON);
     } else {
-      setOrderObj(null);
+      setOrderObj([]);
     }
   }, [orderObj, unverifiedOrderJSON]);
 
   async function verifyTX(ref) {
+    setVerifyLoading(true);
     try {
       const response = await axios.get(`${BASEURLPROD}/verifyTx/${ref}`, {
         headers: {
@@ -48,24 +51,22 @@ function MyOrderPage() {
       });
       if (response.status === 200) {
         console.log(response);
+        setVerifyLoading(false);
+        notifySuccessMsg(response.data.message);
       }
     } catch (error) {
+      setVerifyLoading(false);
+      handleServerError(
+        error.response.status,
+        error.response.data.message,
+        navigate,
+      );
       console.log(error.response);
     }
   }
-  // function removeItem(itemId) {
-  //   const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
-  //   const itemIndexToRemove = existingCart.findIndex(
-  //     (item) => item.id === itemId,
-  //   );
 
-  //   if (itemIndexToRemove !== -1) {
-  //     existingCart.splice(itemIndexToRemove, 1);
-  //   }
-  //   localStorage.setItem('cart', JSON.stringify(existingCart));
-  // }
-  const toggleFaq = () => {
-    setIsOpen(!isOpen);
+  const toggleFaq = (i) => {
+    setActiveIndex((prevIndex) => (prevIndex === i ? null : i));
   };
 
   async function handleRefetch(e) {
@@ -96,14 +97,13 @@ function MyOrderPage() {
       const [_, month, pageCount] = queryKey;
       try {
         const response = await axios.get(
-          `${BASEURLDEV}/order/myOrder?${month !== '' ? `month=${month}` : ''}&page=${pageCount}`,
+          `${BASEURLPROD}/order/myOrder?${month !== '' ? `month=${month}` : ''}&page=${pageCount}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           },
         );
-
         return response.data.doc;
       } catch (error) {
         handleServerError(
@@ -112,7 +112,6 @@ function MyOrderPage() {
           navigate,
         );
         setMsg(error.response.data.message);
-        console.log(error.response);
       }
     },
     keepPreviousData: true,
@@ -127,9 +126,9 @@ function MyOrderPage() {
           <StoreLogo />
         </span>
 
-        {orderObj !== null && (
+        {orderObj.length !== 0 && (
           <div>
-            <h3 className="mx-auto mb-1 mt-10 w-72 rounded-full bg-red-600 px-6 py-2 text-center font-fontSec text-2xl uppercase text-slate-50">
+            <h3 className="mx-auto mb-1 mt-10 w-72 rounded bg-red-600 px-6 py-2 text-center font-fontSec text-2xl uppercase text-slate-50">
               unverified order
             </h3>
             <p className="px-2 py-2 text-center text-lg font-bold capitalize">
@@ -138,7 +137,8 @@ function MyOrderPage() {
             </p>
           </div>
         )}
-        {orderObj !== null && (
+
+        {orderObj && orderObj.length > 0 && (
           <div className="mb-10">
             {orderObj.map((order) => (
               <div
@@ -153,16 +153,12 @@ function MyOrderPage() {
                     {order.products.map((product) => product.name).join(',')}
                   </span>
                 </div>
-                <button
-                  onClick={() => verifyTX(order.txRef)}
-                  className="mt-5 w-40 rounded-md bg-green-500 px-2 py-2 text-center text-lg capitalize text-slate-50"
-                >
-                  verify
-                </button>
+                <VerificationButton orderId={order.id} txRef={order.txRef} />
               </div>
             ))}
           </div>
         )}
+
         <form onClick={(e) => handleRefetch(e)} className=" pb-10">
           <span className="mb-10 flex w-full  flex-wrap justify-start gap-4  md:w-full">
             <select
@@ -199,28 +195,30 @@ function MyOrderPage() {
           )}
           {!isError && !isLoading && (
             <div className="overflow-y">
-              {orderArray.map((order) => (
+              {orderArray.map((order, index) => (
                 <div
                   key={order.id}
                   className="w-90 mx-auto mb-2 rounded-md  px-4 py-4 pb-2 pl-2 pr-7 pt-2 text-lg shadow-2xl sm:w-4/5 md:w-4/5"
                 >
                   <div
-                    onClick={toggleFaq}
+                    onClick={() => {
+                      toggleFaq(index);
+                    }}
                     className="flex cursor-pointer items-center justify-between px-4 py-4 font-sans text-lg font-medium"
                   >
                     <span className="truncate">
                       {order.products
-                        .map((product) => product.productName)
+                        .map((product) => product.productName || product.name)
                         .join(',')}
                     </span>
                     <span
-                      className={`${isOpen ? 'mx-10 rotate-180 text-gray-900' : 'text-emerald-500'} wi cursor-pointer text-4xl`}
+                      className={`${activeIndex === index ? 'mx-10 rotate-180 text-gray-900' : 'text-emerald-500'} wi cursor-pointer text-4xl`}
                     >
                       &#9662;
                     </span>
                   </div>
                   <div
-                    className={`mt-1 ${isOpen ? 'block' : 'hidden'} border-t-2 border-green-400 px-4  py-4 pb-3 text-sm`}
+                    className={`mt-1 ${activeIndex === index ? 'block' : 'hidden'} border-t-2 border-green-400 px-4  py-4 pb-3 text-sm`}
                   >
                     <div className="mb-2 flex flex-col flex-wrap items-start  text-lg capitalize">
                       <h3 className="font-bold">
@@ -271,7 +269,7 @@ function MyOrderPage() {
             </div>
           )}
           {!isError && !isLoading && (
-            <div className="mt-10 flex items-center justify-between pb-10">
+            <div className="justify- mt-10 flex items-center pb-10">
               <button
                 onClick={decreasePageCount}
                 className="mx-2 rounded bg-gray-300 px-3 py-1 text-gray-700 hover:bg-gray-400"

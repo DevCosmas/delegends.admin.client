@@ -9,14 +9,18 @@ import Notify from './notification';
 import notifySuccessMsg from '../utils/notify.succes';
 import { useNavigate } from 'react-router-dom';
 import shortid from 'shortid';
+import { RotatingLines } from 'react-loader-spinner';
 
 function CheckOutUi({ cart, cancel }) {
   const [email, setEmail] = useState('');
-  const [fullname, setFullname] = useState('');
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
+
   const [phone, setPhone] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [deliveryState, setDeliveyState] = useState('');
   const [coupon, setCoupon] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -41,10 +45,12 @@ function CheckOutUi({ cart, cancel }) {
 
   async function placeOrder() {
     try {
+      setIsLoading(true);
       const response = await axios.post(
         `${BASEURLPROD}/checkout`,
         {
-          fullname,
+          firstname,
+          lastname,
           products: cart,
           totalAmount: Total + DELIVERYFEE,
           emailAddress: email,
@@ -70,9 +76,11 @@ function CheckOutUi({ cart, cancel }) {
         saveOrder(orderToSave);
         const { authorization_url } = response.data.doc.paystackTxUrl;
         notifySuccessMsg(response.data.message);
+        setIsLoading(false);
         window.location.assign(`${authorization_url}`);
       }
     } catch (error) {
+      setIsLoading(false);
       handleServerError(
         error.response.status,
         error.response.data.message,
@@ -120,9 +128,16 @@ function CheckOutUi({ cart, cancel }) {
           className=" mb-4  block w-4/5 rounded border pb-1 pl-2 pr-2 pt-1 outline-none"
         />
         <input
-          onChange={(e) => setFullname(e.target.value)}
+          onChange={(e) => setFirstname(e.target.value)}
           type="text"
-          placeholder="Fullname"
+          placeholder="Firstname"
+          required
+          className=" mb-4  block w-4/5 rounded border pb-1 pl-2 pr-2 pt-1 outline-none"
+        />
+        <input
+          onChange={(e) => setLastname(e.target.value)}
+          type="text"
+          placeholder="Lastname"
           required
           className=" mb-4  block w-4/5 rounded border pb-1 pl-2 pr-2 pt-1 outline-none"
         />
@@ -187,7 +202,14 @@ function CheckOutUi({ cart, cancel }) {
           Want to make any changes to Order
         </button>
 
-        <button className="mt-4 block w-4/5 rounded  bg-green-500 px-3 py-3 text-slate-50 hover:bg-green-900">{`Pay ₦${Total + DELIVERYFEE}`}</button>
+        {!isLoading && (
+          <button className="mt-4 block w-4/5 rounded  bg-green-500 px-3 py-3 text-slate-50 hover:bg-green-900">{`Pay ₦${Total + DELIVERYFEE}`}</button>
+        )}
+        {isLoading && (
+          <div className="mt-4">
+            <RotatingLines height="40" width="40" />
+          </div>
+        )}
       </form>
       <span className="pt-40">
         <Notify></Notify>

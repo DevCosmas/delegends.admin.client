@@ -1,10 +1,18 @@
 /* eslint-disable no-unused-vars */
-import { createContext, useReducer, useContext, useState } from 'react';
+import {
+  createContext,
+  useReducer,
+  useContext,
+  useState,
+  useEffect,
+} from 'react';
 import axios from 'axios';
 import { BASEURLDEV, BASEURLPROD } from '../utils/constant';
 import PropTypes from 'prop-types';
 import { handleServerError } from '../utils/error.handler';
 import notifySuccessMsg from '../utils/notify.succes';
+import getToken from '../utils/getToken';
+import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 
@@ -44,8 +52,22 @@ function AuthProvider({ children }) {
     reducer,
     initialState,
   );
-
   const [isLoading, setIsLoading] = useState(false);
+  const previousUserDetails = useLocalStorage('user', null);
+  const previousUser = previousUserDetails[0];
+
+  function useLocalStorage(key, initialValue) {
+    const [storedValue, setStoredValue] = useState(() => {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    });
+
+    useEffect(() => {
+      localStorage.setItem(key, JSON.stringify(storedValue));
+    }, [key, storedValue]);
+
+    return [storedValue, setStoredValue];
+  }
 
   async function signUp(email, password, confirmPassword, username, image) {
     try {
@@ -74,13 +96,14 @@ function AuthProvider({ children }) {
     try {
       if (!email && !password)
         throw new Error('Email and Password cannot be blank');
-      const response = await axios.post(`${BASEURLDEV}/user/loginCustomer`, {
+      const response = await axios.post(`${BASEURLPROD}/user/loginCustomer`, {
         email,
         password,
       });
 
       if (response.status == 200) {
         const { doc } = response.data;
+        console.log(doc);
         notifySuccessMsg(response.data.message);
 
         dispatch({
@@ -96,6 +119,7 @@ function AuthProvider({ children }) {
             username: doc.username,
             expirationTime,
             isAuthenticated: true,
+            email: doc.email,
           }),
         );
         setIsLoading(false);
@@ -107,9 +131,47 @@ function AuthProvider({ children }) {
       handleServerError(error.response.status, error.response.data.message);
     }
   }
+
+  async function updateUser(email, username, photo) {
+    try {
+      const usertoken = getToken();
+
+      const response = await axios.patch(
+        `${BASEURLPROD}/user/updateMe`,
+        {
+          email,
+          username,
+
+          image: photo,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${usertoken}`,
+          },
+        },
+      );
+      if (response.status === 200) {
+        const { doc } = response.data;
+        localStorage.setItem(
+          'user',
+          JSON.stringify({
+            ...previousUser,
+            profilePic: doc.image,
+            username: doc.username,
+            email: doc.email,
+          }),
+        );
+        notifySuccessMsg(response.data.message);
+      }
+    } catch (error) {
+      console.log(error.response);
+      handleServerError(error.response.status, error.response.data.message);
+    }
+  }
   return (
     <AuthContext.Provider
       value={{
+        useLocalStorage,
         user,
         isAuthenticated,
         token,
@@ -117,6 +179,7 @@ function AuthProvider({ children }) {
         setIsLoading,
         isLoading,
         login,
+        updateUser,
       }}
     >
       {children}

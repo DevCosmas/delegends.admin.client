@@ -10,9 +10,11 @@ import CartIcon from '../icons/cart';
 import OrderIcon from '../icons/order.icon';
 import SettingIcon from '../icons/setting';
 import LogoutIcon from '../icons/logout.icon';
+import { useAuth } from '../context/user.context';
 
 function StorePage({ cartNum }) {
   const { pathname } = useLocation();
+  const { useLocalStorage } = useAuth();
 
   function activeLink(type = null) {
     var className = `bg-green-300 text-slate-900`;
@@ -27,18 +29,6 @@ function StorePage({ cartNum }) {
       return null;
     }
   }
-  function useLocalStorage(key, initialValue) {
-    const [storedValue, setStoredValue] = useState(() => {
-      const item = localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
-    });
-
-    useEffect(() => {
-      localStorage.setItem(key, JSON.stringify(storedValue));
-    }, [key, storedValue]);
-
-    return [storedValue, setStoredValue];
-  }
 
   const [user, setUser] = useLocalStorage('user', null);
 
@@ -47,14 +37,16 @@ function StorePage({ cartNum }) {
       <main className="relative">
         <div className=" fixed bottom-0 right-0 top-0 z-40 h-full w-full">
           <span className="flex h-full w-full">
-            <aside className=" hidden h-full w-60 bg-green-900 pl-5 pt-2 md:block">
+            <aside className=" hidden h-full w-60 bg-green-900 pl-5 pt-2 md:flex md:flex-col md:items-start md:justify-start">
               <span className="mx-auto  mt-4 flex flex-col items-center justify-center pt-4 text-center text-slate-50">
                 <p>Welcome 🙌 {user.username}</p>
-                <img
-                  className="my-4 mb-5 inline-block h-10 w-10 rounded-full"
-                  src={user.profilePic}
-                  alt="Customer profile pics"
-                />
+                <div className="my-4 mb-5 h-20 w-20 rounded-full border-2 border-slate-50 px-1 py-1">
+                  <img
+                    className="h-full w-full rounded-full "
+                    src={user.profilePic}
+                    alt="Customer profile pic"
+                  />
+                </div>
               </span>
               <ul className="w-full list-none pr-8 font-marcellus text-lg capitalize text-slate-50">
                 <li
@@ -85,44 +77,41 @@ function StorePage({ cartNum }) {
                   <OrderIcon></OrderIcon>
 
                   <NavLink to={'/store/my_order'}>
-                    <span
-                    // className={`${newOrder ? ` after:ml-0.5 after:text-yellow-300 after:content-['*']` : ''}`}
-                    >
-                      my order
-                    </span>
+                    <span>my order</span>
                   </NavLink>
                 </li>
                 <li
                   className={`my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900 ${activeLink('my_cart')}`}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="h-7 w-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-                    />
-                  </svg>
-
+                  <div className="relative mr-2">
+                    {cartNum !== 0 && (
+                      <sup className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 transform rounded-full bg-red-800 p-1 px-2 py-1 text-center text-xs text-slate-50">
+                        {cartNum}
+                      </sup>
+                    )}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="h-7 w-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                      />
+                    </svg>
+                  </div>
                   <NavLink to={'/store/my_cart'} className="relative">
-                    <span>
-                      my cart{' '}
-                      {cartNum !== 0 && (
-                        <sup className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 transform rounded-full bg-red-800 p-1 px-2 py-1 text-center text-xs text-slate-50">
-                          {cartNum}
-                        </sup>
-                      )}
-                    </span>
+                    <span>my cart </span>
                   </NavLink>
                 </li>
                 <NavLink to={'user_setting'}>
-                  <li className="my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900">
+                  <li
+                    className={`my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900 ${activeLink('user_setting')}`}
+                  >
                     <SettingIcon />
                     <span>Setting</span>
                   </li>
@@ -148,7 +137,7 @@ function StorePage({ cartNum }) {
               <NavLink to={'/store'}>
                 <span className="flex flex-col items-center justify-center hover:text-slate-300">
                   <div
-                    className={`${activeLink('store')} rounded-lg px-1 py-1`}
+                    className={`${activeLink('store')} rounded-full px-1 py-1`}
                   >
                     <HomeIcon></HomeIcon>
                   </div>
@@ -163,7 +152,7 @@ function StorePage({ cartNum }) {
                   >
                     <div
                       className={`${activeLink('my_cart')} item-center
-                      flex rounded-lg px-1 py-2`}
+                      flex rounded-full px-1 py-1`}
                     >
                       <CartIcon></CartIcon>
                       {cartNum !== 0 && (
@@ -180,7 +169,7 @@ function StorePage({ cartNum }) {
                 <span className="flex flex-col items-center justify-center hover:text-slate-300">
                   <div
                     className={`${activeLink('my_order')} item-center
-                      flex rounded-lg px-1 py-2`}
+                      flex rounded-full px-1 py-1`}
                   >
                     <OrderIcon></OrderIcon>
                   </div>
@@ -189,25 +178,15 @@ function StorePage({ cartNum }) {
               </NavLink>
               <span className="flex flex-col items-center justify-center hover:text-slate-300">
                 <div
-                  className={`${activeLink('my_order')} item-center
-                      flex rounded-lg px-1 py-2`}
+                  className={`${activeLink('my_order')} item-center flex h-10
+                      w-10 rounded-full border-2 border-slate-50 px-1 py-1`}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="h-6 w-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                    />
-                  </svg>
+                  <img
+                    className="h-full w-full rounded-full"
+                    src={user.profilePic}
+                    alt="user profile picture"
+                  />
                 </div>
-
                 <p>me</p>
               </span>
             </div>

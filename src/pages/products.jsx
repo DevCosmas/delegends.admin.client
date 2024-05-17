@@ -27,7 +27,6 @@ function ProductPage() {
 
   const [toggleSearchBar, setToggleSearchBar] = useState(false);
 
-  //     setIsLoading(true);
   //     try {
   //       const response = await axios.get(
   //         `${BASEURLDEV}/product/allProduct?${
