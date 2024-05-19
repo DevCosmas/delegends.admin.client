@@ -25,6 +25,7 @@ import FaqUi from '../component/faq.component';
 import ServiceUi from '../component/services.component';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import TypingAnimation from '../component/typing.animation';
 
 function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -161,7 +162,10 @@ function HomePage() {
         </div>
       </header>
       <main>
-        <div className="relative mb-8 mt-9 hidden  flex-wrap items-center justify-start gap-0 px-7 md:flex">
+        <div className="mb-8 mt-8 px-4 py-4 text-xl font-bold capitalize">
+          <TypingAnimation></TypingAnimation>
+        </div>
+        {/* <div className="relative mb-8 mt-9 hidden  flex-wrap items-center justify-start gap-0 px-7 md:flex">
           <span className="h-70 relative w-1/2 cursor-pointer md:shrink-0">
             <img
               src={agroBg}
@@ -223,9 +227,9 @@ function HomePage() {
               <p className="text-lg">{text}</p>
             </div>
           </div>
-        </div>
+        </div> */}
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-1 px-2  md:gap-3">
           <Link className="w-4/5 md:w-72" to={'/signUp'}>
             <Button classname="hover:bg-green-700 flex  pt-2 pb-2 pl-1 rounded-md mt-5 ml-5 pr-1 items-center text-sm bg-slate-900 text-slate-50 border-solid border-slate-900 w-full ">
               <span className="px-4 text-center text-lg"> Start Shopping</span>
@@ -248,7 +252,7 @@ function HomePage() {
             </Button>
           </Link>
           <Link
-            className="flex w-4/5 items-center justify-center text-center md:w-72"
+            className=" w-4/5 items-center  text-center md:w-72"
             to={'partner'}
           >
             <Button classname="hover:stroke-slate-50 text-center px-4 hover:bg-slate-950 hover:font-light hover:text-slate-50 hover:border-none flex  pt-2 pb-2 pl-1 border border-green-500 rounded-md mt-5 ml-5 pr-1 items-center text-lg text-slate-950 border-solid  w-full md:w-72">
@@ -384,7 +388,7 @@ function HomePage() {
           />
         </div>
 
-        <div className="mt-10 overflow-hidden pl-10">
+        <div className="mt-10 overflow-hidden pl-10 pr-10">
           <h1 className="mb-4 w-6 border-b-4 border-green-600 font-marcellus text-3xl">
             Services
           </h1>

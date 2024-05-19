@@ -13,6 +13,7 @@ import { handleServerError } from '../utils/error.handler';
 import notifySuccessMsg from '../utils/notify.succes';
 import getToken from '../utils/getToken';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
 
@@ -103,6 +104,7 @@ function AuthProvider({ children }) {
 
       if (response.status == 200) {
         const { doc } = response.data;
+        const { exp } = jwtDecode(doc.accessToken);
         console.log(doc);
         notifySuccessMsg(response.data.message);
 
@@ -110,23 +112,22 @@ function AuthProvider({ children }) {
           type: 'login',
           payload: { user: doc, token: doc.accessToken },
         });
-        const expirationTime = new Date().getTime() + 60 * 60 * 1000;
+
         localStorage.setItem(
           'user',
           JSON.stringify({
             profilePic: doc.profilePic,
             token: doc.accessToken,
             username: doc.username,
-            expirationTime,
+            expirationTime: exp,
             isAuthenticated: true,
-            email: doc.email,
+            email: doc.email || email,
           }),
         );
         setIsLoading(false);
         return true;
       }
     } catch (error) {
-      console.log(error.response);
       setIsLoading(false);
       handleServerError(error.response.status, error.response.data.message);
     }
@@ -141,7 +142,6 @@ function AuthProvider({ children }) {
         {
           email,
           username,
-
           image: photo,
         },
         {
@@ -152,13 +152,14 @@ function AuthProvider({ children }) {
       );
       if (response.status === 200) {
         const { doc } = response.data;
+        console.log(doc, 'doc from update');
         localStorage.setItem(
           'user',
           JSON.stringify({
             ...previousUser,
             profilePic: doc.image,
             username: doc.username,
-            email: doc.email || previousUser.email,
+            email: doc.email,
           }),
         );
         notifySuccessMsg(response.data.message);

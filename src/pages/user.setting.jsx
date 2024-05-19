@@ -18,12 +18,21 @@ function UserSetting() {
   async function handleUserUpdate(e) {
     setIsLoading(true);
     e.preventDefault();
-    const imageDataUri = await fileToDataURI(file[0]);
-    console.log('IMAGE', imageDataUri);
-    const userEmail = email === '' ? user[0].email : email;
-    const userUsername = username === '' ? user[0].username : username;
-    const userPhoto = imageDataUri === '' ? user[0].profilePic : imageDataUri;
-    await updateUser(userEmail, userUsername, userPhoto);
+    if (!file || file.length == 0) {
+      const userEmail = email === '' ? user[0].email : email;
+      const userUsername = username === '' ? user[0].username : username;
+      const userPhoto = user[0].profilePic;
+      await updateUser(userEmail, userUsername, userPhoto);
+    } else {
+      const imageDataUri = await fileToDataURI(file[0]);
+      if (imageDataUri) {
+        const userEmail = email === '' ? user[0].email : email;
+        const userUsername = username === '' ? user[0].username : username;
+        const userPhoto = imageDataUri;
+        await updateUser(userEmail, userUsername, userPhoto);
+      }
+    }
+
     setIsLoading(false);
   }
 
@@ -77,14 +86,7 @@ function UserSetting() {
               placeholder={`${user[0].username}`}
             />
           </label>
-          {/* <label htmlFor="password">
-            <p className="mb-1 text-lg capitalize">password</p>
-            <input
-              className="w-full rounded-md border bg-none px-4 py-2 outline-none focus-visible:ring-4 md:w-80"
-              type="password"
-              placeholder="Password"
-            />
-          </label> */}
+
           <button
             disabled={isLoading}
             className={`mt-8 w-full rounded-md ${isLoading ? 'bg-blue-200 text-slate-900' : 'bg-blue-500  text-slate-50'} px-2 py-2 text-lg capitalize  md:w-80`}

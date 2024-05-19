@@ -10,7 +10,7 @@ import SignUpAdminPage from './pages/signup.admin';
 import LoginAdminPage from './pages/admin';
 import SendResetTokenPage from './pages/send.reset.token';
 import SetNewPasswordPage from './pages/forgotten.password';
-// import { CartProvider } from './context/cart.context';
+import ErrorPage from './component/404.errorr';
 
 // packages
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
@@ -19,6 +19,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState, useEffect } from 'react';
 import NewDistPage from './pages/newDist';
 import UserSetting from './pages/user.setting';
+import ProtectedRoute from './pages/protected.route';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,7 +47,11 @@ function App() {
 
           <Route
             path="store"
-            element={<StorePage cartNum={myCartItems.length} />}
+            element={
+              <ProtectedRoute>
+                <StorePage cartNum={myCartItems.length} />
+              </ProtectedRoute>
+            }
           >
             <Route index element={<ProductPage></ProductPage>} />
             <Route path="user_setting" element={<UserSetting />} />
@@ -65,6 +70,7 @@ function App() {
           <Route path="signUp_admin" element={<SignUpAdminPage />} />
           <Route path="reset_token" element={<SendResetTokenPage />} />
           <Route path="set_new_password" element={<SetNewPasswordPage />} />
+          <Route path="*" element={<ErrorPage></ErrorPage>} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

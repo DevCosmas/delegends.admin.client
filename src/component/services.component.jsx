@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 function ServiceUi({ name, image }) {
   return (
     <div className="relative mx-auto  mb-2 w-full pr-4 sm:w-4/5 ">
-      <div className="relative h-60 min-w-96 md:w-80">
+      <div className="relative h-60 w-full md:w-80">
         <img
           className="h-60 w-full md:w-full"
           src={image}
