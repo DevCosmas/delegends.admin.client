@@ -1,9 +1,15 @@
 /* eslint-disable no-unused-vars */
 
 // import { useState } from 'react';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import {
+  NavLink,
+  Outlet,
+  useLocation,
+  Link,
+  useNavigate,
+} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+
 import { useState } from 'react';
 import HomeIcon from '../icons/home.icon';
 import CartIcon from '../icons/cart';
@@ -11,10 +17,25 @@ import OrderIcon from '../icons/order.icon';
 import SettingIcon from '../icons/setting';
 import LogoutIcon from '../icons/logout.icon';
 import { useAuth } from '../context/user.context';
+import ChatIcon from '../icons/chat..icon';
+import { MY_NUMBER } from '../utils/constant';
 
 function StorePage({ cartNum }) {
   const { pathname } = useLocation();
   const { useLocalStorage } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+  const navigateSetting = () => {
+    closeMenu();
+    navigate('user_setting');
+  };
 
   function activeLink(type = null) {
     var className = `bg-green-300 text-slate-900`;
@@ -176,9 +197,12 @@ function StorePage({ cartNum }) {
                   <p>orders</p>
                 </span>
               </NavLink>
-              <span className="flex flex-col items-center justify-center hover:text-slate-300">
+              <span
+                onClick={() => toggleMenu()}
+                className="flex flex-col items-center justify-center hover:text-slate-300"
+              >
                 <div
-                  className={`${activeLink('my_order')} item-center flex h-10
+                  className={`  item-center flex h-10
                       w-10 rounded-full border-2 border-slate-50 px-1 py-1`}
                 >
                   <img
@@ -190,9 +214,49 @@ function StorePage({ cartNum }) {
                 <p>me</p>
               </span>
             </div>
+            {isMenuOpen && (
+              <div className="fixed bottom-0 right-0 top-0 z-40 h-full w-full">
+                <span className="flex h-full w-full ">
+                  <div className="  h-full w-40 backdrop-blur-sm"></div>
+                  <ul
+                    className={` h-full w-4/5 bg-green-900 px-2 py-2 
+                  pt-2 text-left font-fontSec text-slate-50`}
+                  >
+                    <span
+                      onClick={() => closeMenu()}
+                      className=" mb-1 block py-5 pr-6 text-right font-sans text-xl hover:text-gray-500"
+                    >
+                      X
+                    </span>
+                    <li className=" mb-1 flex w-full flex-wrap gap-2 rounded-md pb-2 pl-4 pt-2 hover:bg-slate-50 hover:text-slate-950">
+                      <div
+                        onClick={navigateSetting}
+                        className="flex flex-wrap items-center gap-2"
+                      >
+                        <SettingIcon />
+                        <span>Setting</span>
+                      </div>
+                    </li>
+                    <li className="  mb-1 flex w-full flex-wrap gap-2 rounded-md px-3 py-2 hover:bg-slate-50 hover:text-slate-950">
+                      <LogoutIcon />
+                      <span>Logout</span>
+                    </li>
+                  </ul>
+                </span>
+              </div>
+            )}
           </nav>
         </div>
       </main>
+      <a
+        href={`https://wa.me/${MY_NUMBER}`}
+        aria-label="Chat with us on WhatsApp"
+        className="fixed bottom-10 right-10 z-30 h-16 w-16 rounded-full bg-slate-50 hover:bg-green-100"
+      >
+        <div className="flex h-full w-full items-center justify-center">
+          <ChatIcon />
+        </div>
+      </a>
     </div>
   );
 }

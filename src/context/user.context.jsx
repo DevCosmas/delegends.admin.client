@@ -158,7 +158,7 @@ function AuthProvider({ children }) {
             ...previousUser,
             profilePic: doc.image,
             username: doc.username,
-            email: doc.email,
+            email: doc.email || previousUser.email,
           }),
         );
         notifySuccessMsg(response.data.message);
