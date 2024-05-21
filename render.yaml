@@ -1,4 +1,4 @@
 routes:
   - type: rewrite
     source: '/*'
-    destination: '/Dist/index.html'
+    destination: '/dist/index.html'
