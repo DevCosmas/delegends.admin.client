@@ -19,12 +19,22 @@ import LogoutIcon from '../icons/logout.icon';
 import { useAuth } from '../context/user.context';
 import ChatIcon from '../icons/chat..icon';
 import { MY_NUMBER } from '../utils/constant';
+import { handleServerError } from '../utils/error.handler';
 
 function StorePage({ cartNum }) {
   const { pathname } = useLocation();
   const { useLocalStorage } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+
+  async function logout() {
+    try {
+      localStorage.removeItem('user');
+      navigate('/login');
+    } catch (error) {
+      handleServerError(500, 'something went wrong');
+    }
+  }
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -138,7 +148,10 @@ function StorePage({ cartNum }) {
                   </li>
                 </NavLink>
                 <NavLink>
-                  <li className="my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900">
+                  <li
+                    onClick={logout}
+                    className="my-3 flex items-center gap-2 rounded-sm pb-2 pl-5 pr-5 pt-2 hover:bg-green-300 hover:text-slate-900"
+                  >
                     <LogoutIcon />
                     <span>logout</span>
                   </li>
@@ -237,7 +250,10 @@ function StorePage({ cartNum }) {
                         <span>Setting</span>
                       </div>
                     </li>
-                    <li className="  mb-1 flex w-full flex-wrap gap-2 rounded-md px-3 py-2 hover:bg-slate-50 hover:text-slate-950">
+                    <li
+                      onClick={logout}
+                      className="  mb-1 flex w-full flex-wrap gap-2 rounded-md px-3 py-2 hover:bg-slate-50 hover:text-slate-950"
+                    >
                       <LogoutIcon />
                       <span>Logout</span>
                     </li>

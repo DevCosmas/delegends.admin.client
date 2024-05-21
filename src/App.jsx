@@ -39,8 +39,6 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* <ReactQueryDevtools></ReactQueryDevtools> */}
-
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -48,9 +46,9 @@ function App() {
           <Route
             path="store"
             element={
-              <ProtectedRoute>
-                <StorePage cartNum={myCartItems.length} />
-              </ProtectedRoute>
+              <StorePage cartNum={myCartItems.length} />
+              // <ProtectedRoute>
+              // </ProtectedRoute>
             }
           >
             <Route index element={<ProductPage></ProductPage>} />

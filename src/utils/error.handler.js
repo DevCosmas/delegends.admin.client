@@ -17,7 +17,7 @@ const handleServerError = (errorStatus, message, navigate = null) => {
     toast.warning(message, { ...toastProp });
   }
   if (errorStatus === 401 || message.includes('jwt')) {
-    navigate('/login');
+    navigate===null? window.location.href = '/login':navigate('/login') 
   }
   if (errorStatus === 404) {
     toast.error(message, { ...toastProp });

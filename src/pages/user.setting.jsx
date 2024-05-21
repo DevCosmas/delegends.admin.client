@@ -10,13 +10,11 @@ function UserSetting() {
   const [file, setFile] = useState('');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
-  const { useLocalStorage, updateUser } = useAuth();
+  const { useLocalStorage, updateUser, isLoading } = useAuth();
   const user = useLocalStorage('user', null);
 
   async function handleUserUpdate(e) {
-    setIsLoading(true);
     e.preventDefault();
     if (!file || file.length == 0) {
       const userEmail = email === '' ? user[0].email : email;
@@ -32,8 +30,6 @@ function UserSetting() {
         await updateUser(userEmail, userUsername, userPhoto);
       }
     }
-
-    setIsLoading(false);
   }
 
   return (

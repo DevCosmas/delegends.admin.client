@@ -12,7 +12,6 @@ import PropTypes from 'prop-types';
 import { handleServerError } from '../utils/error.handler';
 import notifySuccessMsg from '../utils/notify.succes';
 import getToken from '../utils/getToken';
-import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
@@ -105,14 +104,7 @@ function AuthProvider({ children }) {
       if (response.status == 200) {
         const { doc } = response.data;
         const { exp } = jwtDecode(doc.accessToken);
-        console.log(doc);
         notifySuccessMsg(response.data.message);
-
-        dispatch({
-          type: 'login',
-          payload: { user: doc, token: doc.accessToken },
-        });
-
         localStorage.setItem(
           'user',
           JSON.stringify({
@@ -124,10 +116,16 @@ function AuthProvider({ children }) {
             email: doc.email || email,
           }),
         );
+        dispatch({
+          type: 'login',
+          payload: { user: doc, token: doc.accessToken },
+        });
+
         setIsLoading(false);
         return true;
       }
     } catch (error) {
+      console.log(error.response);
       setIsLoading(false);
       handleServerError(error.response.status, error.response.data.message);
     }
@@ -135,8 +133,8 @@ function AuthProvider({ children }) {
 
   async function updateUser(email, username, photo) {
     try {
+      setIsLoading(true);
       const usertoken = getToken();
-
       const response = await axios.patch(
         `${BASEURLPROD}/user/updateMe`,
         {
@@ -151,12 +149,14 @@ function AuthProvider({ children }) {
         },
       );
       if (response.status === 200) {
+        setIsLoading(false);
         const { doc } = response.data;
-        console.log(doc, 'doc from update');
+        const userfromLs = localStorage.getItem('user');
+        const parseUser = JSON.parse(userfromLs);
         localStorage.setItem(
           'user',
           JSON.stringify({
-            ...previousUser,
+            ...parseUser,
             profilePic: doc.image,
             username: doc.username,
             email: doc.email,
@@ -166,9 +166,11 @@ function AuthProvider({ children }) {
       }
     } catch (error) {
       console.log(error.response);
+      setIsLoading(false);
       handleServerError(error.response.status, error.response.data.message);
     }
   }
+
   return (
     <AuthContext.Provider
       value={{
@@ -177,6 +179,7 @@ function AuthProvider({ children }) {
         isAuthenticated,
         token,
         signUp,
+        // logout,
         setIsLoading,
         isLoading,
         login,

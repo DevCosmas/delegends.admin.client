@@ -27,52 +27,6 @@ function ProductPage() {
 
   const [toggleSearchBar, setToggleSearchBar] = useState(false);
 
-  //     try {
-  //       const response = await axios.get(
-  //         `${BASEURLDEV}/product/allProduct?${
-  //           category !== null || productName !== null
-  //             ? `category=${category}&name=${productName}&page=${pageCount}`
-  //             : ''
-  //         }`,
-  //       );
-  //       if (response.status === 200) {
-  //         setProducts(response.data.doc);
-  //         setProductName('');
-  //         setCategory('');
-  //       }
-  //     } catch (error) {
-  //       setIsError(true);
-  //       setErrMsg(error.response.data.message);
-  //       console.log(error.response);
-  //     }
-  //     setIsLoading(false);
-  //   };
-
-  //   fetchData();
-  // }, [pageCount, productName, category]);
-
-  // const handleFilter = async (e) => {
-  //   e.preventDefault();
-  //   setPageCount(1);
-  //   const fetchData = async () => {
-  //     setIsLoading(true);
-  //     try {
-  //       const response = await axios.get(
-  //         `${BASEURLDEV}/product/allProduct?category=${category}&name=${productName}&page=${pageCount}`,
-  //       );
-  //       if (response.status === 200) {
-  //         setProducts(response.data.doc);
-  //       }
-  //     } catch (error) {
-  //       console.log(error.response);
-  //       setIsError(true);
-  //       setErrMsg(error.response.data.message);
-  //     }
-  //     setIsLoading(false);
-  //   };
-  //   fetchData();
-  // };
-
   const increasePageCount = async () => {
     setPageCount((prev) => prev + 1);
   };
