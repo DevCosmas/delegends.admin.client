@@ -26,6 +26,7 @@ import ServiceUi from '../component/services.component';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import TypingAnimation from '../component/typing.animation';
+import { HEALTH_HERO_WORD, AGRO_HERO_WORD } from '../utils/constant';
 
 function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -69,26 +70,6 @@ function HomePage() {
       },
     ],
   };
-  const [showImage1, setShowImage1] = useState(true);
-  const [textTitle, setTextTitle] = useState('');
-  const [text, setText] = useState('');
-
-  function showImage() {
-    setShowImage1(!showImage1);
-    if (!showImage1) {
-      setTextTitle('Be Healthy');
-      setText(
-        '  Stop being reactive to your health. Be Proactive today with our trusted and guaranteed supplements. Organically made',
-      );
-    } else {
-      setTextTitle('Agronomy');
-      setText(
-        '   Allow our agro product to the do work and see 50% increase in your agro produce. All Agro product are organically made, safe for humans, animal and the environment.',
-      );
-    }
-  }
-
-  const backgroundImageClass = showImage1 ? supplementBg : agroBg;
 
   return (
     <div>
@@ -162,72 +143,23 @@ function HomePage() {
         </div>
       </header>
       <main>
-        <div className="mb-8 mt-8 px-4 py-4 text-xl font-bold capitalize">
-          <TypingAnimation></TypingAnimation>
-        </div>
-        {/* <div className="relative mb-8 mt-9 hidden  flex-wrap items-center justify-start gap-0 px-7 md:flex">
-          <span className="h-70 relative w-1/2 cursor-pointer md:shrink-0">
-            <img
-              src={agroBg}
-              alt="agro produce"
-              className="h-auto w-full"
-              onMouseEnter={(e) =>
-                (e.currentTarget.nextSibling.style.display = 'block')
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.nextSibling.style.display = 'none')
-              }
-            />
-            <span
-              className="absolute inset-0 bg-slate-950 bg-opacity-75 p-4"
-              style={{ display: 'none' }}
-            >
-              <p className="pt-14 font-lobster text-lg font-thin text-slate-200">
-                Allow our agro product to the do work and see 50% increase in
-                your agro produce. All Agro product are organically made, safe
-                for humans, animal and the environment.
-              </p>
-            </span>
-          </span>
-          <span className="h-70 relative w-1/2  cursor-pointer md:shrink-0">
-            <img
-              src={supplementBg}
-              alt="supplement cover image"
-              className="h-auto w-full"
-              onMouseEnter={(e) =>
-                (e.currentTarget.nextSibling.style.display = 'block')
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.nextSibling.style.display = 'none')
-              }
-            />
-            <span
-              className="absolute inset-0 bg-slate-950 bg-opacity-75 p-4"
-              style={{ display: 'none' }}
-            >
-              <p className=" pt-14 align-middle font-lobster text-lg font-thin text-green-400 ">
-                Stop being reactive to your health. Be Proactive today with our
-                trusted and guaranteed supplements. Organically made.
-              </p>
-            </span>
-          </span>
-        </div>
-        <div
-          className={`transition-background-image mt-10 max-h-96 md:hidden  ${backgroundImageClass} bg-cover bg-center`}
-          style={{
-            backgroundImage: showImage1
-              ? `url(${supplementBg})`
-              : `url(${agroBg})`,
-          }}
-          onClick={() => showImage()}
-        >
-          <div className="inset-0 flex max-h-fit items-center justify-center bg-black bg-opacity-70 px-6 py-6">
-            <div className="text-center text-white">
-              <h1 className="mb-4 text-4xl font-bold">{textTitle}</h1>
-              <p className="text-lg">{text}</p>
+        <div className="relative mb-5 mt-10 h-60 w-full">
+          <img
+            className="h-full w-full object-cover"
+            src={agroBg}
+            alt="Background Image"
+          />
+          <div className="absolute inset-0 bg-black opacity-80">
+            <div className="flex h-full flex-col items-center justify-center px-4 py-4 text-xl font-bold uppercase">
+              <span className="mb-2 text-center font-fontSec text-2xl uppercase text-white">
+                Welcome to the Delegend store.
+              </span>
+              <span className="font-bold uppercase text-green-300">
+                <TypingAnimation></TypingAnimation>
+              </span>
             </div>
           </div>
-        </div> */}
+        </div>
 
         <div className="flex flex-wrap items-center gap-1 px-2  md:gap-3">
           <Link className="w-4/5 md:w-72" to={'/signUp'}>

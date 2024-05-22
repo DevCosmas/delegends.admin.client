@@ -46,9 +46,9 @@ function App() {
           <Route
             path="store"
             element={
-              <StorePage cartNum={myCartItems.length} />
-              // <ProtectedRoute>
-              // </ProtectedRoute>
+              <ProtectedRoute>
+                <StorePage cartNum={myCartItems.length} />
+              </ProtectedRoute>
             }
           >
             <Route index element={<ProductPage></ProductPage>} />

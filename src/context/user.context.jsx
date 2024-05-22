@@ -136,7 +136,7 @@ function AuthProvider({ children }) {
       setIsLoading(true);
       const usertoken = getToken();
       const response = await axios.patch(
-        `${BASEURLPROD}/user/updateMe`,
+        `${BASEURLDEV}/user/updateMe`,
         {
           email,
           username,
